@@ -11,7 +11,9 @@ require 'faker'
 
 genres = ["Pop", "Rock", "Hip-Hop", "Jazz", "Classical", "Electronic", "Reggae", "Country", "Blues", "Metal"]
 
-1000.times do
+Song.destroy_all
+
+50.times do
   Song.create!(
     artist_name: Faker::Music.band,
     song_title: Faker::Music::RockBand.song,
@@ -20,4 +22,4 @@ genres = ["Pop", "Rock", "Hip-Hop", "Jazz", "Classical", "Electronic", "Reggae",
   )
 end
 
-puts "✅ 1000 chansons ont été ajoutées à la base de données !"
+puts "✅ 50 chansons ont été ajoutées à la base de données !"
