@@ -13,9 +13,6 @@
 
 <% @portfolios.take(3).each do |portfolio| %>
 <div class="card-portfolio">
-  <% if portfolio.photo %>
-    <%= cl_image_tag(portfolio.photo.key, width: 200, height: 150, crop: :fill)%>
-  <% end%>
   <div class="card-portfolio-infos">
    <h2><%= link_to portfolio.title, portfolio_path(portfolio) %></h2>
    <p><%= portfolio.tags %></p>
