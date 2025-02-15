@@ -10,12 +10,13 @@
     <% @songs.each do |song| %>
         <li>
             <%= song.song_title + ", " + song.artist_name %>
+            <%= link_to "Delete", portfolio_portfolio_song_path(song), class: "btn btn-danger", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
         </li>
     <% end %>
 </ul>
-
+<%= link_to "Add songs", new_portfolio_portfolio_song_path(@portfolio) , class: "btn btn-primary" %>
 <%= cl_image_tag @portfolio.photo.key, height: 300, width: 400, crop: :fill %>
-<%= link_to "Add songs", new_portfolio_path , class: "btn btn-primary" %>
+
 <%= link_to "Back", portfolios_path , class: "btn btn-light" %>
 <%= link_to "Edit", edit_portfolio_path(params[:id]), class: "btn btn-secondary" %>
 <%= link_to "Delete", portfolio_path(params[:id]), class: "btn btn-danger", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>

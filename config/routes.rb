@@ -10,6 +10,10 @@ Rails.application.routes.draw do
 
   get "/dashboard", to: "pages#dashboard"
   resources :portfolios do
+
+    resources :bookings, only: [:new, :create]
+    resources :portfolio_songs, only: [:new, :create, :destroy]
+  end
     resources :bookings, only: [:new, :create, :index, :show] do
       member do
         patch 'cancel'
