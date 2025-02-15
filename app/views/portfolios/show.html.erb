@@ -1,0 +1,20 @@
+<h1>Portfolio infos</h1>
+<ul>
+    <li><%= @portfolio.title %></li>
+    <li><%= @portfolio.tags %></li>
+    <li><%= @portfolio.price_per_day %></li>
+</ul>
+<p>----------</p>
+<h1>Portfolio songs</h1>
+<ul>
+    <% @songs.each do |song| %>
+        <li>
+            <%= song.song_title + ", " + song.artist_name %>
+        </li>
+    <% end %>
+</ul>
+<%= link_to "Add songs", new_portfolio_path , class: "btn btn-primary" %>
+<%= link_to "Back", portfolios_path , class: "btn btn-light" %>
+<%= link_to "Edit", edit_portfolio_path(params[:id]), class: "btn btn-secondary" %>
+<%= link_to "Delete", portfolio_path(params[:id]), class: "btn btn-danger", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
+
