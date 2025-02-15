@@ -13,10 +13,13 @@
 
 <% @portfolios.take(3).each do |portfolio| %>
 <div class="card-portfolio">
-  <%= cl_image_tag("cld-sample-4", width: 200, height: 150, crop: :fill)%>
+  <%= cl_image_tag(portfolio.photo.key, width: 200, height: 150, crop: :fill)%>
   <div class="card-portfolio-infos">
-   <h2><%= portfolio.title %></h2>
+   <h2><%= link_to portfolio.title, portfolio_path(portfolio) %></h2>
    <p><%= portfolio.tags %></p>
   </div>
 </div>
 <% end %>
+
+
+<%= link_to "Tous les portfolios par ici !", portfolios_path , class: "text-homepage" %>

@@ -64,15 +64,24 @@ user_data = [
   end
 
   # Seed pour la table portfolios
+  portfolios_array = ["","",""]
+
   15.times do |i|
-    Portfolio.create!(
+    portfolio = Portfolio.new(
       title: "Portfolio #{i+1}",
       tags: genres.sample,
       user_id: User.all.sample.id,
       price_per_day: (50 + i * 5)
-    )
-  end
 
+    )
+    portfolio.photo.attach(
+      io: URI.open(portfolios_array.sample),
+      filename: 'nomachanger.jpg',
+      content_type: 'image/jpg'
+
+    )
+    portfolio.save
+  end
 
   # Seed pour la table portfolio_songs
   15.times do |i|
