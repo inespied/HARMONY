@@ -1,9 +1,8 @@
-
-#Song.destroy_all
-#User.destroy_all
-#Portfolio.destroy_all
-#PortfolioSong.destroy_all
-#Booking.destroy_all
+Booking.destroy_all
+PortfolioSong.destroy_all
+Portfolio.destroy_all
+Song.destroy_all
+User.destroy_all
 
 genres = ["Pop", "Rock", "Hip-Hop", "Jazz", "Classical", "Electronic", "Reggae", "Country", "Blues", "Metal"]
 
@@ -69,7 +68,7 @@ user_data = [
     Portfolio.create!(
       title: "Portfolio #{i+1}",
       tags: "tag#{i+1}, random",
-      user_id: rand(1..15),
+      user_id: User.all.sample.id,
       price_per_day: (50 + i * 5)
     )
   end
@@ -78,16 +77,16 @@ user_data = [
   # Seed pour la table portfolio_songs
   15.times do |i|
     PortfolioSong.find_or_create_by!(
-      portfolio_id: rand(1..15),
-      song_id: rand(1..15)
+      portfolio_id: Portfolio.all.sample.id,
+      song_id: Song.all.sample.id
     )
   end
 
   # Seed pour la table bookings
   15.times do |i|
     Booking.create!(
-      user_id: rand(1..15),
-      portfolio_id: rand(1..15),
+      user_id: User.all.sample.id,
+      portfolio_id: Portfolio.all.sample.id,
       start_date: "2025-02-14 10:00:00".to_datetime + i.days,
       end_date: "2025-02-14 18:00:00".to_datetime + i.days,
       total_price: (200 + i * 10),
