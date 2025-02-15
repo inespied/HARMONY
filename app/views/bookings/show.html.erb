@@ -1,0 +1,35 @@
+<h1>Détails de la réservation</h1>
+
+<p><strong>Début :</strong> <%= @booking.start_date %></p>
+<p><strong>Fin :</strong> <%= @booking.end_date %></p>
+<p><strong>Statut :</strong> <%= @booking.status %></p>
+<p> Prix total: <span><%= @portfolio.price_per_day %> €</span></p>
+
+
+
+
+
+
+<%= link_to "Retour", portfolio_path(@booking.portfolio), class: "btn btn-secondary" %>
+
+<!-- Form for editing booking dates -->
+<%= simple_form_for [@portfolio, @booking], html: { data: { controller: 'flatpickr' } } do |f| %>
+  <div>
+  <%= f.input :start_date, as: :string, input_html: {
+      data: { flatpickr_target: 'startDateInput', action: 'change->dynamic-booking-price#updatePrice' }
+  } %>
+
+  <%= f.input :end_date, as: :string, input_html: {
+      data: { flatpickr_target: 'endDateInput', action: 'change->dynamic-booking-price#updatePrice' }
+  } %>
+
+  <%= f.submit "Envoyer la demande", class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
+
+<% if @booking.pending? %>
+  <%= link_to "Annuler", cancel_portfolio_booking_path(@booking.portfolio_id, @booking), method: :patch, class: "btn btn-warning btn-sm", data: { confirm: "Annuler cette demande ?" } %>
+  <%= link_to "Accepter", accept_portfolio_booking_path(@booking.portfolio_id, @booking), method: :patch, class: "btn btn-success btn-sm", data: { confirm: "Accepter cette demande ?" } %>
+  <%= link_to "Refuser", decline_portfolio_booking_path(@booking.portfolio_id, @booking), method: :patch, class: "btn btn-danger btn-sm", data: { confirm: "Refuser cette demande ?" } %>
+<% end %>

@@ -1,48 +1,59 @@
 class BookingsController < ApplicationController
-  before_action :set_booking, only: [:cancel, :accept, :decline]
+  before_action :set_booking, only: [:show, :cancel, :accept, :decline]  # Aucune action 'new' ici
+  before_action :set_portfolio, only: [:new, :create, :index]
+
+  def index
+    @bookings = @portfolio.bookings
+  end
+
+  def show
+    @booking = Booking.find(params[:id])
+    @portfolio = @booking.portfolio
+  end
 
   def new
-    @portfolio = Portfolio.find(params[:portfolio_id])
+    # @portfolio = Portfolio.find(params[:portfolio_id])
     @booking = Booking.new
   end
 
   def create
-    @portfolio = Portfolio.find(params[:portfolio_id])
-    @booking = @portfolio.bookings.new(booking_params)
+    @booking = @portfolio.bookings.build(booking_params)
     @booking.user = current_user
-    @booking.status = "pending"
-
-    if @booking.save
-      redirect_to @portfolio, notice: "Demande créée avec succès."
-    else
-      render :new, status: :unprocessable_entity
+  if @booking.save
+    puts "Booking saved!"
+    redirect_to portfolio_booking_path(@portfolio, @booking), notice: "Réservation créée avec succès."
+  else
+    puts "Booking NOT saved! Errors: #{@booking.errors.full_messages}"
+    flash.now[:alert] = @booking.errors.full_messages.join(", ")
+    render :new, status: :unprocessable_entity
     end
   end
 
   def cancel
     if @booking.pending?
-      @booking.cancelled!
-      redirect_to @booking.portfolio, notice: "Demande annulée."
+      @booking.update(status: "cancelled")  # Mettre à jour le statut de la demande
+      redirect_to portfolio_path(@portfolio), notice: 'Demande annulée avec succès.'
     else
-      redirect_to @booking.portfolio, alert: "Cette demande ne peut pas être annulée."
+      redirect_to portfolio_path(@portfolio), alert: 'La demande ne peut pas être annulée.'
     end
   end
 
   def accept
     if @booking.pending?
-      @booking.accepted!
-      redirect_to @booking.portfolio, notice: "Demande acceptée."
+      @booking.update(status: "accepted")  # Mettre à jour le statut de la demande
+      redirect_to portfolio_path(@portfolio), notice: 'Demande acceptée.'
     else
-      redirect_to @booking.portfolio, alert: "Cette demande ne peut pas être acceptée."
+      redirect_to portfolio_path(@portfolio), alert: 'La demande ne peut pas être acceptée.'
     end
   end
 
+
   def decline
     if @booking.pending?
-      @booking.declined!
-      redirect_to @booking.portfolio, notice: "Demande refusée."
+      @booking.update(status: "declined")  # Mettre à jour le statut de la demande
+      redirect_to portfolio_path(@portfolio), notice: 'Demande refusée.'
     else
-      redirect_to @booking.portfolio, alert: "Cette demande ne peut pas être refusée."
+      redirect_to portfolio_path(@portfolio), alert: 'La demande ne peut pas être refusée.'
     end
   end
 
@@ -53,6 +64,10 @@ class BookingsController < ApplicationController
   end
 
   def booking_params
-    params.require(:booking).permit(:start_date, :end_date, :total_price)
+    params.require(:booking).permit(:start_date, :end_date, :price)
+  end
+
+  def set_portfolio
+    @portfolio = Portfolio.find(params[:portfolio_id])
   end
 end
