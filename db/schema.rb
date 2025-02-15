@@ -36,15 +36,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_08_161612) do
     t.index ["song_id"], name: "index_portfolio_songs_on_song_id"
   end
 
-  create_table "portfolios", force: :cascade do |t|
-    t.string "title"
-    t.string "tags"
-    t.bigint "user_id", null: false
-    t.integer "price_per_day"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_portfolios_on_user_id"
-  end
+
 
   create_table "songs", force: :cascade do |t|
     t.string "artist_name"

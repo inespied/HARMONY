@@ -1,0 +1,5 @@
+<%= simple_form_for [@portfolio, @portfolio_song] do |f| %>
+    <%# <%= f.input :song_id, collection: Song.all, label_method: :song_title, value_method: :id, prompt: "Choisis une chanson" %>
+    <%= f.association :song, collection: Song.all, label_method: lambda { |song| song.song_title + ", " + song.artist_name } , value_method: :id %>
+    <%= f.submit %>
+<% end %>
