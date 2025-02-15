@@ -1,0 +1,34 @@
+<h1>Mes réservations</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Portfolio</th>
+      <th>Début</th>
+      <th>Fin</th>
+      <th>Statut</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @bookings.each do |booking| %>
+      <tr>
+        <td><%= link_to booking.portfolio.title, portfolio_path(booking.portfolio) %></td>
+        <td><%= booking.start_date %></td>
+        <td><%= booking.end_date %></td>
+        <td><%= booking.status %></td>
+        <td>
+<%= link_to "Voir", portfolio_booking_path(booking.portfolio, booking), class: "btn btn-info btn-sm" %>
+  <% if booking.pending? %>
+  <%= link_to "Annuler", cancel_portfolio_booking_path(booking.portfolio_id, booking), method: :patch, class: "btn btn-warning btn-sm", data: { confirm: "Annuler cette demande ?" } %>
+<% elsif booking.accepted? %>
+  <%= link_to "Refuser", decline_portfolio_booking_path(booking.portfolio_id, booking), method: :patch, class: "btn btn-danger btn-sm", data: { confirm: "Refuser cette demande ?" } %>
+<% end %>
+
+
+</td>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -3,6 +3,9 @@
     <% @portfolios.each do |portfolio| %>
         <li>
             <%= link_to portfolio.title, portfolio_path(portfolio) %>
+            <%= link_to 'New Reservation', new_portfolio_booking_path(portfolio) %>
+                <%= link_to 'Voir les Réservations', portfolio_bookings_path(portfolio) %> <!-- Lien vers la liste des réservations -->
+
         </li>
     <% end %>
 </ul>

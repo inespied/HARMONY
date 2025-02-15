@@ -1,5 +1,6 @@
 class Portfolio < ApplicationRecord
   belongs_to :user
+  has_many :bookings
   has_many :portfolio_songs
   has_many :songs, through: :portfolio_songs
   TAG_OPTIONS = ["Pop", "Rock", "Hip-Hop", "Jazz", "Classical", "Electronic", "Reggae", "Country", "Blues", "Metal"]
