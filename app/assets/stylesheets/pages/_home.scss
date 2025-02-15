@@ -1,1 +1,22 @@
 // Specific CSS for your home-page
+
+.card-portfolio {
+  display: flex;
+  padding: 1em;
+  gap: 20px;
+  justify-content: center;
+}
+
+.card-portfolio-infos {
+
+}
+
+.text-homepage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1em;
+  background-color:#E4D9FF;
+}
