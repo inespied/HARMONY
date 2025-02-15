@@ -67,7 +67,7 @@ user_data = [
   15.times do |i|
     Portfolio.create!(
       title: "Portfolio #{i+1}",
-      tags: "tag#{i+1}, random",
+      tags: genres.sample,
       user_id: User.all.sample.id,
       price_per_day: (50 + i * 5)
     )
