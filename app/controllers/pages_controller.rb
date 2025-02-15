@@ -6,10 +6,10 @@ class PagesController < ApplicationController
   end
 
   def dashboard
-
-      "ceci est le dashboard"
     #afficher les portoflios attribués au user
+    @portfolios = Portfolio.all
 
     #afficher les bookings attribués au user
+    @bookings = Booking.all
   end
 end

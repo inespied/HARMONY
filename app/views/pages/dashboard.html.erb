@@ -1,5 +1,21 @@
-<p> ceci est le dashboard</p>
+<div class="card-portfolio" >
+<h1> Ton dashboard</h1>
+</div>
 
+<div>
+<h3>Tes bookings :</h3>
 <%= @bookings.all %>
+</div>
 
-<%= @portfolios.all %>
+<div>
+<h3>Tes portfolios :</h3>
+<% @portfolios.take(1).each do |portfolio| %>
+<div class="card-portfolio">
+  <%= cl_image_tag(portfolio.photo.key, width: 200, height: 150, crop: :fill)%>
+  <div class="card-portfolio-infos">
+   <h2><%= link_to portfolio.title, portfolio_path(portfolio) %></h2>
+   <p><%= portfolio.tags %></p>
+  </div>
+</div>
+<% end %>
+</div>

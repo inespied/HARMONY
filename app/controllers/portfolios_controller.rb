@@ -8,9 +8,13 @@ class PortfoliosController < ApplicationController
   end
 
   def create
-    @portfolio = current_user.portfolios.new(portfolio_params)
-    @portfolio.save
-    redirect_to portfolio_path(@portfolio)
+    @portfolio = Portfolio.new(portfolio_params)
+    @portfolio.user = current_user
+    if @portfolio.save
+      redirect_to portfolio_path(@portfolio)
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def show
@@ -37,6 +41,6 @@ class PortfoliosController < ApplicationController
   private
 
   def portfolio_params
-    params.require(:portfolio).permit(:title, :tags, :price_per_day)
+    params.require(:portfolio).permit(:title, :tags, :price_per_day, :photo)
   end
 end

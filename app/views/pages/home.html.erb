@@ -1,12 +1,25 @@
-<h1>Harmony homepage</h1>
-
-<% if user_signed_in? %>
-    <p>Bienvenue <%= current_user.first_name %> !</p>
+<div class="text-homepage"><% if user_signed_in? %>
+    <h2>Bienvenue <%= current_user.first_name %> !</h2>
 <% else %>
-    <p>You are not logged in.</p>
+    <h2>Connecte-toi pour louer une playlist :)</h2>
+<% end %>
+<%= image_tag 'note_music.gif', style: 'height:60px; width:60px;' %>
+</div>
+
+<div class="text-homepage">
+<h4>L'identité sonore, c'est important 🎼</h4>
+<h4>Accède aux meilleures playlists correspondant à l'ambiance de ton shop :</h4></div>
+
+
+<% @portfolios.take(3).each do |portfolio| %>
+<div class="card-portfolio">
+  <%= cl_image_tag(portfolio.photo.key, width: 200, height: 150, crop: :fill)%>
+  <div class="card-portfolio-infos">
+   <h2><%= link_to portfolio.title, portfolio_path(portfolio) %></h2>
+   <p><%= portfolio.tags %></p>
+  </div>
+</div>
 <% end %>
 
 
-<% @portfolios.each do |portfolio| %>
-<%= portfolio %>
-<% end %>
+<%= link_to "Tous les portfolios par ici !", portfolios_path , class: "text-homepage" %>
