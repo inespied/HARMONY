@@ -1,0 +1,6 @@
+<%= simple_form_for(@portfolio) do |f| %>
+  <%= f.input :title %>
+  <%= f.input :tags, collection: Portfolio::TAG_OPTIONS %>
+  <%= f.input :price_per_day, input_html: { type: 'number', required: true } %>
+  <%= f.submit %>
+<% end %>

@@ -1,0 +1,9 @@
+<p>Coucou des portfolios</p>
+<ul>
+    <% @portfolios.each do |portfolio| %>
+        <li>
+            <%= link_to portfolio.title, portfolio_path(portfolio) %>
+        </li>
+    <% end %>
+</ul>
+<%= link_to "Add a portfolio", new_portfolio_path , class: "btn btn-primary" %>
