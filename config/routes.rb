@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   end
   resources :bookings, only: [] do
     member do
-
+"h"
   patch :cancel
   patch :accept
   patch :decline
