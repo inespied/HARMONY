@@ -1,7 +1,12 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<h1>Harmony homepage</h1>
+
 <% if user_signed_in? %>
-    <p>Coucouuuuuuu c'est un test <%= current_user.email %></p>
+    <p>Bienvenue <%= current_user.first_name %> !</p>
 <% else %>
     <p>You are not logged in.</p>
+<% end %>
+
+
+<% @portfolios.each do |portfolio| %>
+<%= portfolio %>
 <% end %>
