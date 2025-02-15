@@ -4,7 +4,7 @@ Portfolio.destroy_all
 Song.destroy_all
 User.destroy_all
 
-genres = ["Pop", "Rock", "Hip-Hop", "Jazz", "Classical", "Electronic", "Reggae", "Country", "Blues", "Metal"]
+genres = Portfolio::TAG_OPTIONS
 
 # Seed pour la table users
 user_data = [
