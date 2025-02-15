@@ -9,6 +9,15 @@ Rails.application.routes.draw do
   resources :pages
   resources :portfolios
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  get "/dashboard", to: "pages#dashboard"
+  resources :portfolios do
+    resources :bookings, only: [:new, :create]
+  end
+  resources :bookings, only: [] do
+    member do
+      patch :cancel
+      patch :accept
+      patch :decline
+    end
+  end
 end
