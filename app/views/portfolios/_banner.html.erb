@@ -1,0 +1,73 @@
+<% total_seconds = @portfolio.songs.sum(&:duration_in_second) %>
+<% hours = total_seconds / 3600 %>
+<% minutes = (total_seconds % 3600) / 60 %>
+<% total_duration = hours.positive? ? "#{hours} h #{minutes} min" : "#{minutes} min" %>
+
+<div style="
+  position: relative;
+  height: 300px;
+  background: #333; /* fallback si pas de photo */
+  <% if @portfolio.photo.attached? %>
+    background-image: url(<%= url_for(@portfolio.photo) %>);
+  <% end %>
+  background-size: cover;
+  background-position: center;
+">
+
+  <!-- Overlay sombre -->
+  <div style="
+    position: absolute; top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.6);
+  "></div>
+
+  <!-- Texte en bas à gauche, aligné à gauche -->
+  <div style="
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    color: #fff;
+    text-align: left;   /* aligne tout le texte à gauche */
+  ">
+    <!-- Petit label “Playlist” -->
+    <span style="font-size:14px; color:#ccc;">Playlist</span>
+
+    <!-- Gros titre (nom de la playlist) -->
+    <h1 class="display-2 fw-semibold" style="margin:5px 0;">
+      <%= @portfolio.title %>
+    </h1>
+
+    <!-- Si pas de chansons, on met “Playlist vide”, sinon “X titres • durée” -->
+    <% if @songs.size.zero? %>
+      <p style="margin:0;">Playlist vide</p>
+    <% else %>
+      <p style="margin:0;">
+        <%= @songs.size %> titres &bull; <%= total_duration %>
+      </p>
+    <% end %>
+  </div>
+
+  <!-- Bouton filaire en bas à droite -->
+  <div style="
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+  ">
+    <button type="button"
+      data-bs-toggle="modal" data-bs-target="#editPlaylistModal"
+      style="
+        border: 2px solid #fff;
+        background: transparent;
+        color: #fff;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        border-radius: 75px;
+      "
+      onmouseover="this.style.background='#fff'; this.style.color='#000';"
+      onmouseout="this.style.background='transparent'; this.style.color='#fff';"
+    >
+      Éditer la playlist
+    </button>
+  </div>
+</div>

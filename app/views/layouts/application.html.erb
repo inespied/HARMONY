@@ -10,9 +10,16 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <%= render "shared/navbar" %>
-    <%= yield %>
-    <%= render "shared/flashes" %>
+  <body style="margin: 0; padding: 0; height: 100vh;"
+        class="d-flex flex-column bg-black text-white">
+
+    <header class="flex-shrink-0">
+      <%= render "shared/navbar" %>
+    </header>
+
+    <main class="d-flex flex-column flex-grow-1" style="overflow: hidden; min-height: 0;">
+      <%= yield %>
+    </main>
+
   </body>
 </html>
