@@ -1,0 +1,129 @@
+<div class="modal fade" id="editPlaylistModal" tabindex="-1"
+     aria-labelledby="editPlaylistLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- HEADER -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="editPlaylistLabel">Modifier la playlist</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- FORMULAIRE -->
+      <%= form_with model: portfolio,
+                    url: portfolio_path(portfolio),
+                    method: :patch,
+                    html: { id: "edit_portfolio", multipart: true },
+                    local: true do |f| %>
+
+        <div class="modal-body">
+
+          <!-- Preview image (150x150) + overlay -->
+          <div style="position: relative; width:150px; height:150px; margin-bottom:1rem;">
+            <%# On ajoute data-initial-src pour garder l'URL initiale de la photo %>
+            <img id="photoPreview"
+                 data-initial-src="<%= portfolio.photo.attached? ? url_for(portfolio.photo) : '/images/default.png' %>"
+                 src="<%= portfolio.photo.attached? ? url_for(portfolio.photo) : '/images/default.png' %>"
+                 style="width:150px; height:150px; object-fit:cover; border-radius:8px;" />
+
+            <!-- Overlay caché par défaut -->
+            <div class="overlay"
+                 style="position:absolute; top:0; left:0; right:0; bottom:0;
+                        display:flex; align-items:center; justify-content:center;
+                        background:rgba(0,0,0,0.5); color:#fff;
+                        opacity:0; transition: opacity 0.2s; border-radius:8px;">
+              <button type="button" class="btn btn-light btn-sm"
+                      onclick="document.getElementById('photoInput').click()">
+                Changer photo
+              </button>
+            </div>
+          </div>
+
+          <!-- Input file caché -->
+          <%= f.file_field :photo, id: "photoInput", style: "display:none;" %>
+
+          <!-- Champs Titre -->
+          <div class="mb-3">
+            <%= f.label :title, "Titre de la playlist", class: "form-label" %>
+            <%= f.text_field :title, class: "form-control" %>
+          </div>
+
+          <!-- Champs Genre -->
+          <div class="mb-3">
+            <%= f.label :tags, "Genre", class: "form-label" %>
+            <%= f.select :tags, Portfolio::TAG_OPTIONS, {}, class: "form-select" %>
+          </div>
+
+        </div> <!-- /.modal-body -->
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Annuler
+          </button>
+          <button type="submit" class="btn btn-primary">
+            Enregistrer
+          </button>
+        </div>
+
+      <% end %>
+
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPT pour l'overlay, la preview instantanée et le reset du formulaire -->
+<script>
+  document.addEventListener("turbo:load", () => {
+    const modal = document.getElementById("editPlaylistModal");
+    if (!modal) return;
+
+    let formSubmitted = false;
+    const form = document.getElementById("edit_portfolio");
+    if (form) {
+      form.addEventListener("submit", () => {
+        // On a cliqué sur "Enregistrer"
+        formSubmitted = true;
+      });
+    }
+
+    // Overlay et preview instantanée
+    const photoPreview = document.getElementById("photoPreview");
+    const photoInput = document.getElementById("photoInput");
+    const overlay = modal.querySelector(".overlay");
+
+    if (photoPreview && overlay) {
+      const container = photoPreview.parentNode;
+      container.addEventListener("mouseenter", () => overlay.style.opacity = 1);
+      container.addEventListener("mouseleave", () => overlay.style.opacity = 0);
+    }
+
+    if (photoInput && photoPreview) {
+      photoInput.addEventListener("change", e => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            photoPreview.src = ev.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
+    // Au moment où la modal est fermée (hidden.bs.modal)
+    modal.addEventListener("hidden.bs.modal", () => {
+      if (!formSubmitted) {
+        // Si on n'a pas cliqué "Enregistrer", on réinitialise le formulaire
+        if (form) {
+          form.reset();
+        }
+        // Et on remet la preview à sa valeur initiale
+        if (photoPreview) {
+          photoPreview.src = photoPreview.dataset.initialSrc;
+        }
+      }
+      // Réinitialiser la variable pour la prochaine ouverture
+      formSubmitted = false;
+    });
+  });
+</script>

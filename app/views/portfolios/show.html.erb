@@ -1,22 +1,129 @@
-<h1>Portfolio infos</h1>
-<ul>
-    <li><%= @portfolio.title %></li>
-    <li><%= @portfolio.tags %></li>
-    <li><%= @portfolio.price_per_day %></li>
-</ul>
-<p>----------</p>
-<h4>Portfolio songs</h4>
-<ul>
-    <% @songs.each do |song| %>
-        <li>
-            <%= song.song_title + ", " + song.artist_name %>
-            <%= link_to "Delete", portfolio_portfolio_song_path(song), class: "btn btn-danger", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
-        </li>
-    <% end %>
-</ul>
-<%= link_to "Add songs", new_portfolio_portfolio_song_path(@portfolio) , class: "btn btn-primary" %>
-<%= cl_image_tag @portfolio.photo.key, height: 300, width: 400, crop: :fill %>
+<style>
+  .song-row {
+    transition: background-color 0.2s ease-in-out;
+  }
+  .song-row:hover {
+    background-color: rgb(43, 43, 43);
+    border-radius: 8px;
+  }
+  .song-delete {
+    display: none;
+  }
+  .song-row:hover .song-delete {
+    display: block;
+  }
+</style>
 
-<%= link_to "Back", portfolios_path , class: "btn btn-light" %>
-<%= link_to "Edit", edit_portfolio_path(params[:id]), class: "btn btn-secondary" %>
-<%= link_to "Delete", portfolio_path(params[:id]), class: "btn btn-danger", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
+<!-- 1) Conteneur principal (bleu) -->
+<div class="flex-grow-1 d-flex flex-column"
+     style="overflow: hidden; min-height: 0; padding: 0 1rem 1rem 1rem;">
+
+  <!-- 2) Bloc arrondi blanc occupant tout l’espace -->
+  <div class="flex-grow-1 d-flex flex-column rounded-5 bg-light"
+       style="overflow: hidden; min-height: 0;">
+    
+
+    <!-- ================== BANDEAU / BANNER ================== -->
+  <%= render "banner", portfolio: @portfolio %>
+
+    <!-- BARRE DE CONTRÔLES (ne scrolle pas) -->
+    <div class="flex-shrink-0 d-flex align-items-center p-4" style="background-color: #212121;">
+      <button class="btn btn-success me-2">
+        <i class="bi bi-play-fill"></i> Play
+      </button>
+      
+      <%= link_to new_portfolio_portfolio_song_path(@portfolio), 
+                  class: "btn btn-outline-light me-2" do %>
+        <i class="bi bi-plus-lg"></i> Add Song
+      <% end %>
+
+      <!-- Le bouton ouvrant la modale -->
+      <button type="button" class="btn btn-secondary"
+              data-bs-toggle="modal" data-bs-target="#editPlaylistModal">
+        Editer la playlist
+      </button>
+
+      <%= link_to "Delete", 
+                  portfolio_path(@portfolio),
+                  data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+                  class: "btn btn-danger ms-2" %>
+    </div>
+
+    <!-- ENTÊTE DE LISTE (ne scrolle pas) -->
+    <div class="flex-shrink-0 px-4 pb-3 text-white-50" style="background-color: #212121;">
+      <div class="d-flex px-4">
+        <div class="me-auto"># &nbsp; Titre</div>
+        <div>Durée</div>
+      </div>
+      <hr class="border-light mt-2 mb-0" />
+    </div>
+
+    <!-- LISTE DES SONGS => scrolle -->
+    <div class="flex-grow-1 overflow-auto px-4 pb-2" 
+         style="background-color: #212121; min-height: 0;">
+      <% if @songs.any? %>
+        <% @songs.each_with_index do |song, index| %>
+          <% portfolio_song = @portfolio.portfolio_songs.find_by(song_id: song.id) %>
+          <% song_minutes = song.duration_in_second / 60 %>
+          <% song_secs = song.duration_in_second % 60 %>
+          <% formatted_song_duration = "#{song_minutes}:#{"%02d" % song_secs}" %>
+          
+          <div class="d-flex align-items-center px-4 py-2 song-row">
+            <!-- Numéro -->
+            <div style="margin-right: 1rem;">
+              <%= index + 1 %>
+            </div>
+            <!-- Titre + Artiste -->
+            <div class="me-auto">
+              <strong><%= song.song_title %></strong>
+              <br>
+              <small class="text-white-50"><%= song.artist_name %></small>
+            </div>
+            <!-- Durée -->
+            <div class="text-white-50" style="width: 50px; text-align: right; margin-right: 1rem;">
+              <%= formatted_song_duration %>
+            </div>
+            <!-- Suppr -->
+            <div class="song-delete" style="display: none;">
+              <%= link_to "✕",
+                          portfolio_portfolio_song_path(@portfolio, portfolio_song),
+                          data: { turbo_method: :delete, turbo_confirm: "Remove this song?" },
+                          class: "text-danger fs-4 text-decoration-none" %>
+            </div>
+          </div>
+
+          <!-- Survol via JS -->
+          <script>
+            document.addEventListener("DOMContentLoaded", function() {
+              const rows = document.querySelectorAll(".song-row");
+              rows.forEach(row => {
+                row.addEventListener("mouseenter", () => {
+                  row.style.backgroundColor = "rgb(43, 43, 43)";
+                  const del = row.querySelector(".song-delete");
+                  if (del) del.style.display = "block";
+                });
+                row.addEventListener("mouseleave", () => {
+                  row.style.backgroundColor = "transparent";
+                  const del = row.querySelector(".song-delete");
+                  if (del) del.style.display = "none";
+                });
+              });
+            });
+          </script>
+        <% end %>
+      <% else %>
+        <div class="d-flex flex-column align-items-center justify-content-center h-100">
+          <p class="text-white fs-4">Commencez à ajouter des musiques à la playlist</p>
+          <%= link_to new_portfolio_portfolio_song_path(@portfolio), class: "btn btn-outline-light mt-3" do %>
+            <i class="bi bi-plus-lg"></i> Add Song
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+  </div> <!-- Fin bloc arrondi blanc -->
+</div> <!-- Fin conteneur bleu -->
+
+
+<!-- ================== LA MODALE EN DEHORS DE LA DIV overflow: hidden ================== -->
+<%= render "portfolios/edit_modal", portfolio: @portfolio %>
