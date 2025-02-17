@@ -12,7 +12,7 @@
 
 
 <% @portfolios.take(3).each do |portfolio| %>
-<div class="card-portfolio">
+<div class="card-portfolio">git f
   <div class="card-portfolio-infos">
    <h2><%= link_to portfolio.title, portfolio_path(portfolio) %></h2>
    <p><%= portfolio.tags %></p>
@@ -22,3 +22,4 @@
 
 
 <%= link_to "Tous les portfolios par ici !", portfolios_path , class: "text-homepage" %>
+<%= link_to 'Voir les Réservations', portfolio_bookings_path(@portfolio), class: "btn btn-info btn-sm ms-2"  %>

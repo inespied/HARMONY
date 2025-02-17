@@ -21,7 +21,7 @@
   <!-- 2) Bloc arrondi blanc occupant tout l’espace -->
   <div class="flex-grow-1 d-flex flex-column rounded-5 bg-light"
        style="overflow: hidden; min-height: 0;">
-    
+
 
     <!-- ================== BANDEAU / BANNER ================== -->
   <%= render "banner", portfolio: @portfolio %>
@@ -31,8 +31,8 @@
       <button class="btn btn-success me-2">
         <i class="bi bi-play-fill"></i> Play
       </button>
-      
-      <%= link_to new_portfolio_portfolio_song_path(@portfolio), 
+
+      <%= link_to new_portfolio_portfolio_song_path(@portfolio),
                   class: "btn btn-outline-light me-2" do %>
         <i class="bi bi-plus-lg"></i> Add Song
       <% end %>
@@ -43,10 +43,12 @@
         Editer la playlist
       </button>
 
-      <%= link_to "Delete", 
+      <%= link_to "Delete",
                   portfolio_path(@portfolio),
                   data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
                   class: "btn btn-danger ms-2" %>
+                    <%= link_to ' Demande de reservation', new_portfolio_booking_path(@portfolio), class: "btn btn-info btn-sm ms-2" %>
+
     </div>
 
     <!-- ENTÊTE DE LISTE (ne scrolle pas) -->
@@ -59,7 +61,7 @@
     </div>
 
     <!-- LISTE DES SONGS => scrolle -->
-    <div class="flex-grow-1 overflow-auto px-4 pb-2" 
+    <div class="flex-grow-1 overflow-auto px-4 pb-2"
          style="background-color: #212121; min-height: 0;">
       <% if @songs.any? %>
         <% @songs.each_with_index do |song, index| %>
@@ -67,7 +69,7 @@
           <% song_minutes = song.duration_in_second / 60 %>
           <% song_secs = song.duration_in_second % 60 %>
           <% formatted_song_duration = "#{song_minutes}:#{"%02d" % song_secs}" %>
-          
+
           <div class="d-flex align-items-center px-4 py-2 song-row">
             <!-- Numéro -->
             <div style="margin-right: 1rem;">
@@ -127,3 +129,4 @@
 
 <!-- ================== LA MODALE EN DEHORS DE LA DIV overflow: hidden ================== -->
 <%= render "portfolios/edit_modal", portfolio: @portfolio %>
+<%= link_to 'New Reservation', new_portfolio_booking_path(@portfolio) %>

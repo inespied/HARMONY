@@ -1,27 +1,28 @@
-<h1>Nouvelle réservation</h1>
+<div data-controller="flatpickr" data-flatpickr-price="<%= @portfolio.price_per_day %>">
+  <%= simple_form_for [@portfolio, @booking], data: { turbo: false } do |f| %>
+    <%= f.error_notification %>
 
-<div data-controller="dynamic-booking-price" data-dynamic-booking-price-price-value="<%= @portfolio.price_per_day %>">
-<%= simple_form_for [@portfolio, @booking], data: { turbo: false } do |f| %>
-  <%= f.input :start_date, as: :string, input_html: {
-    data: {
-      flatpickr_target: 'startDateInput',
-      action: 'change->dynamic-booking-price#updatePrice'
-    }
-  } %>
+    <div class="form-group">
+      <%= f.input :start_date, as: :string, input_html: {
+        data: { flatpickr_target: 'startDateInput' },
+        class: 'form-control flatpickr-input',
+        value: @booking.start_date&.strftime("%Y-%m-%d")
+      } %>
+    </div>
 
-  <%= f.input :end_date, as: :string, input_html: {
-    data: {
-      flatpickr_target: 'endDateInput',
-      action: 'change->dynamic-booking-price#updatePrice'
-    }
-  } %>
-<p>
-    Prix total: <span data-dynamic-booking-price-target="priceHolder"><%= @portfolio.price_per_day %></span> €
-  </p>
-  <%= f.submit "Envoyer la demande", class: 'btn btn-primary' %>
-<% end %>
+    <div class="form-group">
+      <%= f.input :end_date, as: :string, input_html: {
+        data: { flatpickr_target: 'endDateInput' },
+        class: 'form-control flatpickr-input',
+        value: @booking.end_date&.strftime("%Y-%m-%d")
+      } %>
+    </div>
 
+    <div class="form-group">
+      <p>Prix total: <span data-flatpickr-target="priceHolder"></span></p>
+      <%= f.hidden_field :total_price, data: { flatpickr_target: "totalPriceInput" } %>
+    </div>
 
-<%= link_to "Retour", portfolio_path(@portfolio), class: "btn btn-secondary" %>
-
+    <%= f.submit "Envoyer la demande", class: 'btn btn-primary' %>
+  <% end %>
 </div>

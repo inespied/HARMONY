@@ -3,6 +3,7 @@ class PagesController < ApplicationController
 
   def home
     @portfolios = Portfolio.all
+    @portfolio = Portfolio.first
   end
 
   def dashboard
