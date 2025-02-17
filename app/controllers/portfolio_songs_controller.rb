@@ -16,9 +16,9 @@ class PortfolioSongsController < ApplicationController
   end
 
   def destroy
-    @song = Song.find(params[:portfolio_id])
-    @portfolio = Portfolio.find(params[:id])
-    PortfolioSong.where(portfolio_id: @portfolio.id, song_id: @song.id).first.delete 
+    @portfolio = Portfolio.find(params[:portfolio_id])
+    @portfolio_song = PortfolioSong.find(params[:id])
+    @portfolio_song.destroy
     redirect_to portfolio_path(@portfolio)
   end
 

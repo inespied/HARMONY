@@ -5,7 +5,7 @@
 
 <div style="
   position: relative;
-  height: 300px;
+  height: 250px;
   background: #333; /* fallback si pas de photo */
   <% if @portfolio.photo.attached? %>
     background-image: url(<%= url_for(@portfolio.photo) %>);
@@ -20,28 +20,45 @@
     background: rgba(0,0,0,0.6);
   "></div>
 
+  <!-- Lien "Tous les portfolios" en haut à gauche, avec chevron-left Lucide -->
+  <div style="position: absolute; top: 20px; left: 20px;">
+    <%= link_to portfolios_path, style: "display: flex; align-items: center; text-decoration: none;" do %>
+      <!-- Icône chevron-left (Lucide), couleur blanche -->
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        width="24" 
+        height="24" 
+        viewBox="0 0 24 24"
+        fill="none" 
+        stroke="currentColor" 
+        stroke-width="2" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"
+        style="color: #fff; margin-right: 5px;"
+      >
+        <path d="M15 18l-6-6 6-6"/>
+      </svg>
+      <span style="color: #fff; font-size: 16px;">Tous les portfolios</span>
+    <% end %>
+  </div>
+
   <!-- Texte en bas à gauche, aligné à gauche -->
   <div style="
     position: absolute;
     bottom: 20px;
     left: 20px;
     color: #fff;
-    text-align: left;   /* aligne tout le texte à gauche */
+    text-align: left;
   ">
-    <!-- Petit label “Playlist” -->
     <span style="font-size:14px; color:#ccc;">Playlist</span>
-
-    <!-- Gros titre (nom de la playlist) -->
     <h1 class="display-2 fw-semibold" style="margin:5px 0;">
       <%= @portfolio.title %>
     </h1>
-
-    <!-- Si pas de chansons, on met “Playlist vide”, sinon “X titres • durée” -->
     <% if @songs.size.zero? %>
       <p style="margin:0;">Playlist vide</p>
     <% else %>
       <p style="margin:0;">
-        <%= @songs.size %> titres &bull; <%= total_duration %>
+        <%= pluralize(@songs.size, 'titre') %> &bull; <%= total_duration %>
       </p>
     <% end %>
   </div>
@@ -52,22 +69,46 @@
     bottom: 20px;
     right: 20px;
   ">
-    <button type="button"
-      data-bs-toggle="modal" data-bs-target="#editPlaylistModal"
-      style="
-        border: 2px solid #fff;
-        background: transparent;
-        color: #fff;
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: all 0.2s ease-in-out;
-        border-radius: 75px;
-      "
-      onmouseover="this.style.background='#fff'; this.style.color='#000';"
-      onmouseout="this.style.background='transparent'; this.style.color='#fff';"
-    >
-      Éditer la playlist
-    </button>
+    <% if @portfolio.user == current_user %>
+      <button type="button"
+              data-bs-toggle="modal" data-bs-target="#editPlaylistModal"
+              style="
+                display: inline-block;
+                border: 2px solid #fff;
+                background: #fff;
+                color: #000;
+                padding: 10px 20px;
+                font-size: 1rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: transform 0.2s ease-in-out;
+                border-radius: 75px;
+                text-decoration: none;
+              "
+              onmouseover="this.style.transform='scale(1.05)';"
+              onmouseout="this.style.transform='scale(1)';"
+      >
+        Éditer la playlist
+      </button>
+    <% else %>
+      <%= link_to "Louer la playlist",
+          new_portfolio_booking_path(@portfolio),
+          style: "
+            display: inline-block;
+            border: 2px solid #fff;
+            background: #fff;
+            color: #000;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            border-radius: 75px;
+            text-decoration: none;
+          ",
+          onmouseover: "this.style.transform='scale(1.05)';",
+          onmouseout: "this.style.transform='scale(1)';"
+      %>
+    <% end %>
   </div>
 </div>
