@@ -24,7 +24,7 @@ class PortfoliosController < ApplicationController
 
   def destroy
     @portfolio = Portfolio.find(params[:id])
-    @portfolio.delete
+    @portfolio.destroy
     redirect_to portfolios_path
   end
 

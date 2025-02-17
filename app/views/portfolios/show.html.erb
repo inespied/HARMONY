@@ -89,16 +89,15 @@
             <div class="song-delete" style="display: none;">
               <%= link_to "✕",
                           portfolio_portfolio_song_path(@portfolio, portfolio_song),
-                          data: { turbo_method: :delete, turbo_confirm: "Remove this song?" },
+                          data: { turbo_method: :delete },
                           class: "text-danger fs-4 text-decoration-none" %>
             </div>
           </div>
 
           <!-- Survol via JS -->
           <script>
-            document.addEventListener("DOMContentLoaded", function() {
-              const rows = document.querySelectorAll(".song-row");
-              rows.forEach(row => {
+            document.addEventListener("turbo:load", function() {
+              document.querySelectorAll(".song-row").forEach(row => {
                 row.addEventListener("mouseenter", () => {
                   row.style.backgroundColor = "rgb(43, 43, 43)";
                   const del = row.querySelector(".song-delete");
@@ -129,4 +128,3 @@
 
 <!-- ================== LA MODALE EN DEHORS DE LA DIV overflow: hidden ================== -->
 <%= render "portfolios/edit_modal", portfolio: @portfolio %>
-<%= link_to 'New Reservation', new_portfolio_booking_path(@portfolio) %>
