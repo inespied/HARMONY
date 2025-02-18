@@ -9,6 +9,13 @@
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      document.addEventListener("turbo:load", function() {
+        lucide.createIcons(); 
+      });
+    </script>
   </head>
 
   <body style="margin: 0; padding: 0; height: 100vh;"
