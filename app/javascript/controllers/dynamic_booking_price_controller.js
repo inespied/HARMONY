@@ -22,9 +22,6 @@ export default class extends Controller {
         const startDate = new Date(startDateValue);
         const endDate = new Date(endDateValue);
 
-        console.log("Start Date:", startDate);
-        console.log("End Date:", endDate);
-
         if (isNaN(startDate.getTime())) {
           this.priceHolderTarget.textContent = "Date de début invalide";
           return;
@@ -38,8 +35,6 @@ export default class extends Controller {
         if (endDate > startDate) {
           const pricePerDay = parseFloat(this.data.get("price"));
 
-          console.log("Price per day:", pricePerDay);
-
           if (isNaN(pricePerDay)) {
             console.error("Prix par jour invalide :", pricePerDay);
             this.priceHolderTarget.textContent = "Prix invalide";
@@ -48,13 +43,8 @@ export default class extends Controller {
 
           const days = (endDate - startDate) / (1000 * 3600 * 24);
 
-          console.log("Days:", days);
-
           if (days > 0) {
             const totalPrice = days * pricePerDay;
-
-            console.log("Total Price:", totalPrice);
-
             this.priceHolderTarget.textContent = `${totalPrice.toFixed(2)} €`;
             if (this.hasTotalPriceInputTarget) {
               this.totalPriceInputTarget.value = totalPrice.toFixed(2);

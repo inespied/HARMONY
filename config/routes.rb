@@ -11,12 +11,12 @@ Rails.application.routes.draw do
   get "/dashboard", to: "pages#dashboard"
   resources :portfolios do
     resources :portfolio_songs, only: [:new, :create, :destroy]
-    resources :bookings, only: [:new, :create, :index, :show, :destroy] do
+    resources :bookings, only: [:new, :create, :index, :show, :destroy, :update] do
       member do
-        patch 'cancel'
-        patch 'accept'
-        patch 'decline'
+        patch 'accept', to: 'bookings#accept'
+        patch 'decline', to: 'bookings#decline'
+        patch 'cancel', to: 'bookings#cancel'
       end
-  end
+    end
   end
 end
