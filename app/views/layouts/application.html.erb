@@ -11,15 +11,15 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body style="margin: 0; padding: 0;"
+  <body style="margin: 0; padding: 0; height: 100vh;"
         class="d-flex flex-column bg-black text-white">
 
     <header class="flex-shrink-0">
       <%= render "shared/navbar" %>
     </header>
-   <main class="d-flex flex-column flex-grow-1" style="overflow: hidden; min-height: 0;">
-  <%= yield %>
-</main>
+    <main class="d-flex flex-column flex-grow-1" style="overflow: hidden; min-height: 0;">
+      <%= yield %>
+    </main>
   </body>
 </html>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
