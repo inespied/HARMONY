@@ -86,12 +86,14 @@
               <%= formatted_song_duration %>
             </div>
             <!-- Suppr -->
-            <div class="song-delete" style="display: none;">
-              <%= link_to "✕",
-                          portfolio_portfolio_song_path(@portfolio, portfolio_song),
-                          data: { turbo_method: :delete },
-                          class: "text-danger fs-4 text-decoration-none" %>
-            </div>
+            <% if @portfolio.user == current_user %>
+              <div class="song-delete" style="display: none;">
+                <%= link_to "✕",
+                            portfolio_portfolio_song_path(@portfolio, portfolio_song),
+                            data: { turbo_method: :delete },
+                            class: "text-danger fs-4 text-decoration-none" %>
+              </div>
+            <% end %>
           </div>
 
           <!-- Survol via JS -->
