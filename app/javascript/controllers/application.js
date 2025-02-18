@@ -1,4 +1,4 @@
-// app/javascript/application.js
+/ app/javascript/application.js
 
 import "flatpickr";
 import "flatpickr/dist/flatpickr.min.css"; // Importation correcte du CSS
@@ -11,5 +11,3 @@ eagerLoadControllersFrom("controllers", application);
 
 import FlatpickrController from "./controllers/flatpickr_controller";
 application.register("flatpickr", FlatpickrController);
-import * as Rails from "@rails/ujs"; // ou import Rails from "@rails/ujs";
-Rails.start();
