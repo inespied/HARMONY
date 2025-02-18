@@ -2,12 +2,12 @@
 
 <p>
   <strong>Début :</strong>
-  <%= @booking.start_date.present? ? @booking.start_date.strftime('%d/%m/%Y') : "Date non définie" %>
+  <%= @start_date.present? ? @start_date.strftime('%d/%m/%Y') : "Date non définie" %>
 </p>
 
 <p>
   <strong>Fin :</strong>
-  <%= @booking.end_date.present? ? @booking.end_date.strftime('%d/%m/%Y') : "Date non définie" %>
+  <%= @end_date.present? ? @end_date.strftime('%d/%m/%Y') : "Date non définie" %>
 </p>
 
 <p>
@@ -15,15 +15,16 @@
   <%= @booking.status.present? ? @booking.status.capitalize : "Statut non défini" %>
 </p>
 
-<p>
-  <strong>Prix total :</strong>
-  <%= @booking.total_price.present? ? number_to_currency(@booking.total_price, unit: "€") : "Prix non défini" %>
-  (Prix par jour: <%= number_to_currency(@booking.portfolio.price_per_day, unit: "€") %>)
-</p>
+<p>Prix par jour : <%= @price_per_day %> €</p>
+
+<% if @start_date.present? && @end_date.present? %>
+  <p>Prix total : <%= @total_price %> €</p>
+<% else %>
+  <p>Prix total : Date de début ou de fin manquante</p>
+<% end %>
 
 <%= link_to "Retour", portfolio_bookings_path(@booking.portfolio), class: "btn btn-secondary" %>
 
-<%# <%= link_to "Accepter", accept_portfolio_booking_path(@portfolio, @booking), method: :patch, class: "btn btn-success btn-sm", data: { confirm: "Accepter cette demande ?" } if @booking.pending? %>
-<%= link_to "Refuser", decline_portfolio_booking_path(@booking.portfolio, @booking), method: :patch, class: "btn btn-danger btn-sm", data: { confirm: "Refuser cette demande ?" } if @booking.pending? %>
-<%= link_to "Annuler", cancel_portfolio_booking_path(@booking.portfolio, @booking), method: :patch, class: "btn btn-warning btn-sm", data: { confirm: "Annuler cette demande ?" } if @booking.pending? %>
-<%= link_to "Accepter", accept_portfolio_booking_path(@booking.portfolio, @booking), method: :patch, class: "btn btn-success btn-sm", data: { confirm: "Accepter cette demande ?" } if @booking.pending? %>
+<%= link_to "Accepter", accept_portfolio_booking_path(@portfolio, @booking), method: :patch, class: "btn btn-success" %>
+<%= link_to "Décliner", decline_portfolio_booking_path(@portfolio, @booking), method: :patch, class: "btn btn-danger" %>
+<%= link_to "Annuler", cancel_portfolio_booking_path(@portfolio, @booking), method: :patch, class: "btn btn-warning" %>

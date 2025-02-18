@@ -19,11 +19,13 @@
           <td><%= booking.end_date %></td>
           <td><%= booking.status.present? ? booking.status.capitalize : "Non défini" %></td>
           <td>
-            <%= link_to "Voir", portfolio_booking_path(booking.portfolio, booking), class: "btn btn-info btn-sm" %>
-            <% if booking.accepted? %>
-              <%= link_to "Refuser", portfolio_booking_path(booking.portfolio, booking), method: :delete, class: "btn btn-danger btn-sm", data: { confirm: "Refuser et supprimer cette demande ?" } %>
-            <% end %>
-          </td>
+          <%= link_to "Voir", portfolio_booking_path(booking.portfolio, booking), class: "btn btn-info btn-sm" %>
+          <%= form_with(url: portfolio_booking_path(booking.portfolio, booking), method: :delete, data: { confirm: "Supprimer cette réservation ?" }) do %>
+  <%= submit_tag "Supprimer", class: "btn btn-danger btn-sm" %>
+<% end %>
+</td>
+
+
         </tr>
       <% end %>
     </tbody>
