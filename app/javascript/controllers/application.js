@@ -11,3 +11,5 @@ eagerLoadControllersFrom("controllers", application);
 
 import FlatpickrController from "./controllers/flatpickr_controller";
 application.register("flatpickr", FlatpickrController);
+import Rails from 'rails-ujs'
+Rails.start()
