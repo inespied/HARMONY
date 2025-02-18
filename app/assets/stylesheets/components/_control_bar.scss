@@ -1,0 +1,140 @@
+/* ====== Bouton Play (vert) ====== */
+.btn-play {
+  width: 56px;
+  height: 56px;
+  border: none;
+  border-radius: 50%;
+  background-color: #1DB954; /* Vert Spotify */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+  margin-right: 0.7rem;
+}
+.btn-play:hover {
+  transform: scale(1.05);
+}
+.btn-play i {
+  color: #fff;
+  width: 24px;
+  height: 24px;
+}
+.btn-play i svg {
+  stroke: #fff !important;
+  fill: #fff !important;
+}
+
+/* ====== Boutons cercles (shuffle, +, etc.) ====== */
+.btn-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: transparent;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+  outline: none;
+  border: none;
+}
+.btn-circle i {
+  width: 20px;
+  height: 20px;
+  color: #fff;
+}
+.btn-circle:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ====== Barre de contrôle globale ====== */
+.spotify-control-bar {
+  min-height: 72px;
+}
+
+/* ========== Search container : remplacement de l'icône par l'input ========== */
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* la loupe est collée à l'extrémité droite */
+}
+
+/* Le bouton loupe initial (avant clic) */
+.search-toggle {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  z-index: 2;
+}
+.search-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Le conteneur de l'input (et de ses icônes) : caché par défaut */
+.search-input-container {
+  position: absolute;
+  right: 0; /* l'extrémité droite est collée au bord du container */
+  top: 50%;
+  transform: translateY(-50%) translateX(10px); /* effet slide initial */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Icône loupe interne (à gauche dans l'input) */
+.search-icon-inside {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  width: 18px;
+  height: 18px;
+}
+
+/* L’input de recherche */
+.search-input {
+  width: 240px;
+  height: 40px;
+  padding: 0 36px 0 36px; /* espace à gauche pour l'icône et à droite pour la croix */
+  border: none;
+  border-radius: 4px;
+  background-color: #333;
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+.search-input::placeholder {
+  color: #aaa;
+}
+
+/* Icône "x" pour effacer le contenu, positionnée à droite dans l'input */
+.clear-input {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #aaa;
+  display: none; /* cachée par défaut */
+}
+
+/* Affichage de l'input (lorsque la classe .show-input est ajoutée) */
+.search-container.show-input .search-toggle {
+  display: none;
+}
+.search-container.show-input .search-input-container {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0);
+}
