@@ -1,15 +1,9 @@
-/ app/javascript/application.js
+import { Application } from "@hotwired/stimulus"
 
-import "flatpickr";
-import "flatpickr/dist/flatpickr.min.css"; // Importation correcte du CSS
+const application = Application.start()
 
-import { Application } from "stimulus";
-import { eagerLoadControllersFrom } from "@hotwired/stimulus-loading";
+// Configure Stimulus development experience
+application.debug = false
+window.Stimulus   = application
 
-const application = Application.start();
-eagerLoadControllersFrom("controllers", application);
-
-import FlatpickrController from "./controllers/flatpickr_controller";
-application.register("flatpickr", FlatpickrController);
-import Rails from 'rails-ujs'
-Rails.start()
+export { application }
