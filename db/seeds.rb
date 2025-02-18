@@ -8,35 +8,41 @@ genres = Portfolio::TAG_OPTIONS
 
 # Seed pour la table users
 user_data = [
-    { email: "john.smith@example.com", first_name: "John", last_name: "Smith", description: "Software Developer and Music Enthusiast." },
-    { email: "emma.jones@example.com", first_name: "Emma", last_name: "Jones", description: "Professional Photographer and Traveler." },
-    { email: "michael.brown@example.com", first_name: "Michael", last_name: "Brown", description: "Guitarist and Music Producer." },
-    { email: "lucas.miller@example.com", first_name: "Lucas", last_name: "Miller", description: "Food Blogger and Podcaster." },
-    { email: "sophia.davis@example.com", first_name: "Sophia", last_name: "Davis", description: "Visual Artist and Designer." },
-    { email: "daniel.garcia@example.com", first_name: "Daniel", last_name: "Garcia", description: "Entrepreneur and Innovator." },
-    { email: "olivia.martinez@example.com", first_name: "Olivia", last_name: "Martinez", description: "Yoga Instructor and Wellness Advocate." },
-    { email: "noah.rodriguez@example.com", first_name: "Noah", last_name: "Rodriguez", description: "Filmmaker and Music Lover." },
-    { email: "isabella.lopez@example.com", first_name: "Isabella", last_name: "Lopez", description: "Marketing Specialist and Content Creator." },
-    { email: "jackson.wilson@example.com", first_name: "Jackson", last_name: "Wilson", description: "Freelance Writer and Nature Enthusiast." },
-    { email: "ava.moore@example.com", first_name: "Ava", last_name: "Moore", description: "Teacher and Amateur Pianist." },
-    { email: "elijah.taylor@example.com", first_name: "Elijah", last_name: "Taylor", description: "Photographer and Digital Artist." },
-    { email: "mia.anderson@example.com", first_name: "Mia", last_name: "Anderson", description: "Fashion Blogger and Stylist." },
-    { email: "james.thomas@example.com", first_name: "James", last_name: "Thomas", description: "Engineer and Hiking Enthusiast." },
-    { email: "chloe.jackson@example.com", first_name: "Chloe", last_name: "Jackson", description: "Musician and Environmental Activist." }
+    { email: "john.smith@example.com", first_name: "John", last_name: "Smith", description: "Software Developer and Music Enthusiast.",image_path: "app/assets/images/photo1.jpg"},
+    { email: "emma.jones@example.com", first_name: "Emma", last_name: "Jones", description: "Professional Photographer and Traveler.",image_path: "app/assets/images/photo_moi.png"},
+    { email: "michael.brown@example.com", first_name: "Michael", last_name: "Brown", description: "Guitarist and Music Producer.",image_path: "app/assets/images/photo2.jpg" },
+    { email: "lucas.miller@example.com", first_name: "Lucas", last_name: "Miller", description: "Food Blogger and Podcaster.",image_path: "app/assets/images/photo3.jpg" },
+    { email: "sophia.davis@example.com", first_name: "Sophia", last_name: "Davis", description: "Visual Artist and Designer.",image_path: "app/assets/images/photo4.jpg" },
+    { email: "daniel.garcia@example.com", first_name: "Daniel", last_name: "Garcia", description: "Entrepreneur and Innovator.",image_path: "app/assets/images/photo5.jpg" },
+    { email: "olivia.martinez@example.com", first_name: "Olivia", last_name: "Martinez", description: "Yoga Instructor and Wellness Advocate.",image_path: "app/assets/images/photo6.jpg" },
+    { email: "noah.rodriguez@example.com", first_name: "Noah", last_name: "Rodriguez", description: "Filmmaker and Music Lover.",image_path: "app/assets/images/photo7.jpg" },
+    { email: "isabella.lopez@example.com", first_name: "Isabella", last_name: "Lopez", description: "Marketing Specialist and Content Creator.",image_path: "app/assets/images/photo8.jpg" },
+    { email: "jackson.wilson@example.com", first_name: "Jackson", last_name: "Wilson", description: "Freelance Writer and Nature Enthusiast.",image_path: "app/assets/images/photo9.jpg" },
+    { email: "ava.moore@example.com", first_name: "Ava", last_name: "Moore", description: "Teacher and Amateur Pianist.",image_path: "app/assets/images/photo10.jpg" },
+    { email: "elijah.taylor@example.com", first_name: "Elijah", last_name: "Taylor", description: "Photographer and Digital Artist.",image_path: "app/assets/images/photo11.jpg" },
+    { email: "mia.anderson@example.com", first_name: "Mia", last_name: "Anderson", description: "Fashion Blogger and Stylist.",image_path: "app/assets/images/photo12.jpg" },
+    { email: "james.thomas@example.com", first_name: "James", last_name: "Thomas", description: "Engineer and Hiking Enthusiast.",image_path: "app/assets/images/photo13.jpg" },
+    { email: "chloe.jackson@example.com", first_name: "Chloe", last_name: "Jackson", description: "Musician and Environmental Activist.",image_path: "app/assets/images/photo14.jpg" }
   ]
 
   user_data.each do |user|
-    User.create!(
+    new_user = User.new(
       email: user[:email],
       password: "password123",
       first_name: user[:first_name],
       last_name: user[:last_name],
       description: user[:description],
     )
+    new_user.photo.attach(
+      io: File.open(user[:image_path]),
+      filename: new_user.first_name,
+      content_type: "image/jpg"
+    )
+    new_user.save!
   end
 
   # Seed pour la table songs
-  artists = [
+songs = [
     { artist_name: "Adele", song_title: "Hello", duration_in_second: 295, genre: "Pop" },
     { artist_name: "The Beatles", song_title: "Hey Jude", duration_in_second: 431, genre: "Rock" },
     { artist_name: "Billie Eilish", song_title: "Bad Guy", duration_in_second: 194, genre: "Pop" },
@@ -54,7 +60,7 @@ user_data = [
     { artist_name: "Coldplay", song_title: "Viva La Vida", duration_in_second: 242, genre: "Rock" }
   ]
 
-  artists.each do |song|
+songs.each do |song|
     Song.create!(
       artist_name: song[:artist_name],
       song_title: song[:song_title],
@@ -63,24 +69,20 @@ user_data = [
     )
   end
 
-  # Seed pour la table portfolios
-  portfolios_array = ["","",""]
-
-  15.times do |i|
+  #Seed des portfolios
+  genres.each_with_index do |genre, i|
     portfolio = Portfolio.new(
-      title: "Portfolio #{i+1}",
+      title: "#{genres.sample} Portfolio",
       tags: genres.sample,
       user_id: User.all.sample.id,
-      price_per_day: (50 + i * 5)
-
+      price_per_day: 50 + (i * 10)
     )
     portfolio.photo.attach(
-      io: URI.open(portfolios_array.sample),
-      filename: 'nomachanger.jpg',
-      content_type: 'image/jpg'
-
+      io: File.open("app/assets/images/Portfolio#{rand(1..15)}.jpg"),
+      filename: portfolio.title,
+      content_type: "image/jpg"
     )
-    portfolio.save
+    portfolio.save!
   end
 
   # Seed pour la table portfolio_songs
@@ -99,6 +101,6 @@ user_data = [
       start_date: "2025-02-14 10:00:00".to_datetime + i.days,
       end_date: "2025-02-14 18:00:00".to_datetime + i.days,
       total_price: (200 + i * 10),
-      status: ["confirmed", "pending", "canceled"].sample
+      status: ["declined", "pending", "cancelled","accepted"].sample
     )
   end

@@ -12,7 +12,10 @@
 
 
 <% @portfolios.take(3).each do |portfolio| %>
-<div class="card-portfolio">git f
+<div class="card-portfolio">
+  <% if portfolio.photo.attached? %>
+    <%= cl_image_tag portfolio.photo.key, height: 300, width: 300, crop: :fill %>
+    <% end %>
   <div class="card-portfolio-infos">
    <h2><%= link_to portfolio.title, portfolio_path(portfolio) %></h2>
    <p><%= portfolio.tags %></p>
