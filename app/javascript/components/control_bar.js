@@ -4,10 +4,9 @@ document.addEventListener("turbo:load", () => {
   const searchInputContainer = document.querySelector(".search-input-container");
   const searchInput = document.querySelector(".search-input");
   const clearInput = document.querySelector(".clear-input");
-  const plusButton = document.querySelector(".plus-btn");
 
   if (searchToggle && searchContainer && searchInputContainer && searchInput && clearInput) {
-    // Au clic sur la loupe, affiche l'input et attend la fin de la transition pour focus
+    // Au clic sur la loupe, affiche l'input et attends la fin de la transition pour focus
     searchToggle.addEventListener("click", (e) => {
       e.stopPropagation();
       searchContainer.classList.add("show-input");
@@ -21,17 +20,24 @@ document.addEventListener("turbo:load", () => {
       searchInputContainer.addEventListener("transitionend", onTransitionEnd);
     });
 
-    // Si on clique en dehors, cache l'input et réaffiche la loupe
+    // Fonction pour fermer l'input et le vider
+    const closeSearch = () => {
+      searchContainer.classList.remove("show-input");
+      searchInput.value = "";
+      clearInput.style.display = "none";
+    };
+
+    // Au clic en dehors du container, ferme l'input
     document.addEventListener("click", (evt) => {
       if (!searchContainer.contains(evt.target)) {
-        searchContainer.classList.remove("show-input");
+        closeSearch();
       }
     });
 
-    // Si on appuie sur la touche Échap, cache l'input
+    // Si on appuie sur la touche Échap, ferme l'input
     document.addEventListener("keyup", (evt) => {
       if (evt.key === "Escape") {
-        searchContainer.classList.remove("show-input");
+        closeSearch();
       }
     });
 
