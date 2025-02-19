@@ -1,0 +1,50 @@
+/* Modal Overrides pour #editPlaylistModal */
+
+/* Contrainte globale de la modal */
+div#editPlaylistModal .modal-content {
+    border-radius: 1rem;
+    background-color: #212121 !important;
+  }
+  
+  /* Suppression des bordures du header et footer */
+  div#editPlaylistModal .modal-content .modal-header,
+  div#editPlaylistModal .modal-content .modal-footer {
+    border: none !important;
+  }
+  
+  /* Style des labels (identique à la search bar) */
+  div#editPlaylistModal .modal-content .form-label {
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    margin-bottom: 0.625rem !important;
+    color: #fff !important;
+  }
+  
+  /* Style des inputs et selects, identique à .search-input */
+  div#editPlaylistModal .modal-content input.form-control,
+  div#editPlaylistModal .modal-content select.form-select {
+    width: 100% !important;
+    height: 40px !important;
+    padding: 0.625rem !important;
+    border: none !important;
+    border-radius: 4px !important;
+    background-color: #333 !important;
+    color: #fff !important;
+    font-size: 0.9rem !important;
+    outline: none !important;
+    transition: all 0.3s ease !important;
+  }
+  
+  /* Placeholder */
+  div#editPlaylistModal .modal-content input.form-control::placeholder,
+  div#editPlaylistModal .modal-content select.form-select::placeholder {
+    color: #aaa !important;
+  }
+  
+  /* Focus : contour blanc */
+  div#editPlaylistModal .modal-content input.form-control:focus,
+  div#editPlaylistModal .modal-content select.form-select:focus {
+    outline: 2px solid #fff !important;
+    outline-offset: 2px !important;
+  }
+  

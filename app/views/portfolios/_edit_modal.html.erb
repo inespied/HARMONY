@@ -24,14 +24,14 @@
             <img id="photoPreview"
                  data-initial-src="<%= portfolio.photo.attached? ? url_for(portfolio.photo) : '/images/default.png' %>"
                  src="<%= portfolio.photo.attached? ? url_for(portfolio.photo) : '/images/default.png' %>"
-                 style="width:150px; height:150px; object-fit:cover; border-radius:8px;" />
+                 style="width:150px; height:150px; object-fit:cover; border-radius:1rem;" />
 
             <!-- Overlay caché par défaut -->
             <div class="overlay"
                  style="position:absolute; top:0; left:0; right:0; bottom:0;
                         display:flex; align-items:center; justify-content:center;
                         background:rgba(0,0,0,0.5); color:#fff;
-                        opacity:0; transition: opacity 0.2s; border-radius:8px;">
+                        opacity:0; transition: opacity 0.2s; border-radius:1rem;">
               <button type="button" class="btn btn-light btn-sm"
                       onclick="document.getElementById('photoInput').click()">
                 Changer photo
