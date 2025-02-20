@@ -1,19 +1,20 @@
+<!-- app/views/shared/_modal.html.erb -->
 <div class="modal fade" id="<%= modal_id %>" tabindex="-1" aria-labelledby="<%= modal_id %>Label" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content" style="border: none; border-radius: 1rem; background-color: #212121;">
       
-      <!-- HEADER : titre et bouton de fermeture, sans bordure -->
+      <!-- HEADER -->
       <div class="modal-header" style="border-bottom: none;">
         <h5 class="modal-title" id="<%= modal_id %>Label" style="color: #fff;"><%= title %></h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       
-      <!-- BODY : contenu custom via yield -->
+      <!-- BODY -->
       <div class="modal-body" style="color: #fff;">
         <%= yield %>
       </div>
       
-      <!-- FOOTER : boutons (optionnel), sans bordure -->
+      <!-- FOOTER -->
       <% if defined?(buttons) && buttons.present? %>
         <div class="modal-footer" style="border-top: none;">
           <% if buttons.size == 1 %>
@@ -22,12 +23,8 @@
             </div>
           <% elsif buttons.size >= 2 %>
             <div class="w-100 d-flex justify-content-between">
-              <div>
-                <%= buttons.first %>
-              </div>
-              <div>
-                <%= buttons.second %>
-              </div>
+              <div><%= buttons.first %></div>
+              <div><%= buttons.second %></div>
             </div>
           <% end %>
         </div>

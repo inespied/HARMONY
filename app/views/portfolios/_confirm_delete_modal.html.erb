@@ -1,0 +1,49 @@
+<!-- app/views/portfolios/_confirm_delete_modal.html.erb -->
+
+<%= render "shared/modal",
+           modal_id: "confirmDeleteModal",
+           title: "Supprimer le portfolio",
+           buttons: [
+             button_tag("Annuler",
+                        type: "button",
+                        data: { bs_dismiss: "modal" },
+                        style: "
+                          display: inline-block;
+                          border: 1px solid rgba(255,255,255,0.5);
+                          background: transparent;
+                          color: #fff;
+                          padding: 10px 20px;
+                          font-size: 1rem;
+                          font-weight: 500;
+                          cursor: pointer;
+                          transition: transform 0.2s ease-in-out, border-color 0.2s;
+                          border-radius: 75px;
+                        ",
+                        onmouseover: "this.style.transform='scale(1.05)'; this.style.borderColor='#fff';",
+                        onmouseout: "this.style.transform='scale(1)'; this.style.borderColor='rgba(255,255,255,0.5)';"
+             ),
+             link_to("Confirmer",
+                     portfolio_path(portfolio),
+                     method: :delete,
+                     data: { turbo_method: :delete },
+                     style: "
+                       display: inline-block;
+                       border: none;
+                       background: #ff5555;
+                       color: #fff;
+                       padding: 10px 20px;
+                       font-size: 1rem;
+                       font-weight: 500;
+                       cursor: pointer;
+                       transition: transform 0.2s ease-in-out;
+                       border-radius: 75px;
+                       text-decoration: none;
+                     ",
+                     onmouseover: "this.style.transform='scale(1.05)';",
+                     onmouseout: "this.style.transform='scale(1)';"
+             )
+           ] do %>
+  <p style="color: #fff; font-size: 1rem; margin: 1rem 0;">
+    Êtes-vous sûr de vouloir supprimer ce portfolio ? Cette action est irréversible.
+  </p>
+<% end %>
