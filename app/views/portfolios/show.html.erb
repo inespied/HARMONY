@@ -17,7 +17,7 @@
 </style>
 
 <!-- Conteneur principal (fond bleu) -->
-<div class="flex-grow-1 d-flex flex-column" style="overflow: hidden; min-height: 0; padding: 0 1rem 1rem 1rem;">
+<div class="flex-grow-1 d-flex flex-column" style="overflow: hidden; height: 90vh; padding: 0.5rem 1rem 1rem 1rem;">
   <div class="flex-grow-1 d-flex flex-column rounded-5 bg-light" style="overflow: hidden; min-height: 0;">
     
     <!-- BANDEAU / BANNER -->
@@ -70,7 +70,7 @@
     </div>
 
     <!-- LISTE DES CHANSONS -->
-    <div class="flex-grow-1 overflow-auto px-4 pb-2" style="background-color: #212121; min-height: 0;">
+    <div class="flex-grow-1 px-4 pb-2" style="background-color: #212121; height: 48vh; overflow-y: scroll;">
       <% if @songs.any? %>
         <% @songs.each_with_index do |song, index| %>
           <% portfolio_song = @portfolio.portfolio_songs.find_by(song_id: song.id) %>
