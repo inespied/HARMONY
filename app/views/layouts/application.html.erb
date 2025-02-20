@@ -32,7 +32,9 @@
 </html>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
 
-<footer class="gif-container">
-  <div><%= image_tag 'Harmony.gif', style: 'height:200px; width:200px;' %></div>
-  <div><p>Art Reveal Corp©</p></div>
-</footer>
+<% unless controller_name == "portfolios" && action_name == "show" %>
+  <footer class="gif-container">
+
+    <div><p class="rainbow-text" style="font-size:1rem">Art Reveal Corp©</p></div>
+  </footer>
+<% end %>

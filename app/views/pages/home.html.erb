@@ -2,19 +2,24 @@
 
 <div id="bandeau-homepage">
   <div class="text-homepage"><% if user_signed_in? %>
-      <h1 id="text-bandeau-homepage">Bienvenue <%= current_user.first_name %> !</h1>
+      <h1 id="text-bandeau-homepage">Bienvenue <span class="rainbow-text"><%= current_user.first_name %></span> !</h1>
   <% else %>
       <h1 id="text-bandeau-homepage">Connecte-toi pour louer une playlist ☻</h1>
   <% end %>
   </div>
 
   <div class="text-homepage">
-  <h4 id="text-bandeau-homepage" style="font-weight: 300;">L'identité sonore, c'est important ♫</h4>
-  <h4 id="text-bandeau-homepage" style="font-weight: 300;">Grâce à Harmony, transforme ton espace en expérience musicale</h4>
+  <h4 id="text-bandeau-homepage" style="font-weight: 300;">L'identité sonore, c'est important <span class="rainbow-text" style="font-size:1.5rem">♫</span></h4>
+  <h4 class="mb-5" id="text-bandeau-homepage" style="font-weight: 300;">Grâce à Harmony, transforme ton espace en expérience musicale</h4>
+
+ <!-- BOUTONS EN BAS DE LA HOME -->
+<div class="div-portfolio">
+<button class="button-29" role="button" ><%= link_to "Tous les portfolios par ici !", portfolios_path , class: "text-homepage" %></button>
+</div>
   </div>
 </div>
 
-  <h2 id="text-bandeau-homepage" style="font-weight: 300; text-align: center;">Découvre nos playlists pensées pour sublimer ton lieu :</h2>
+  <h2 id="text-bandeau-homepage" style="font-weight: 300; text-align: center;">Découvre nos <span class="rainbow-text" style="font-size:2rem">playlists</span> pensées pour sublimer ton lieu :</h2>
 <!-- CAROUSEL DE LA HOME -->
 <div class="carousel-container">
 
@@ -91,11 +96,9 @@ document.addEventListener("turbo:load", function() {
 });
 </script>
 
-<!-- BOUTONS EN BAS DE LA HOME -->
-<div class="div-portfolio">
-<button class="button-29" role="button" ><%= link_to "Tous les portfolios par ici !", portfolios_path , class: "text-homepage" %></button>
-</div>
+
 
 <div class="div-reservation">
 <button class="button-89" role="button"><%= link_to 'Voir mes réservations', portfolio_bookings_path(@portfolio)%></button>
 </div>
+<div style="padding: 100px"></div>
