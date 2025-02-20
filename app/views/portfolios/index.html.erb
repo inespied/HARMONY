@@ -1,10 +1,63 @@
-<p>Tous les portfolios :</p>
-<ul>
-    <% @portfolios.each do |portfolio| %>
-        <li>
-            <%= link_to portfolio.title, portfolio_path(portfolio) %>
+<div><h1 style="text-align: center; padding: 50px;">Tous nos portfolios :</h1></div>
 
-        </li>
-    <% end %>
-</ul>
-<%= link_to "Add a portfolio", new_portfolio_path , class: "btn btn-primary" %>
+<!-- BARRE DE RECHERCHE -->
+<div style="padding: 10px; text-align: center;">
+  <input type="text" id="tagSearch" placeholder="Recherche par tag" onkeyup="filterCards()">
+</div>
+
+<!-- CAROUSEL DE L'INDEX -->
+<div class="carousel-container-index">
+  <% @portfolios.each do |portfolio| %>
+    <a href="<%= portfolio_path(portfolio) %>" class="carousel-card-index-link">
+      <div class="carousel-card-index" data-tags="<%= portfolio.tags.downcase %>">
+        <div class="card-image-wrapper-index">
+          <% if portfolio.photo.attached? %>
+            <%= cl_image_tag portfolio.photo.key, height: 200, width: 300, crop: :fill, class: "card-image-index" %>
+          <% else %>
+            <div class="card-image-placeholder-index">
+              <span>Image non disponible</span>
+            </div>
+          <% end %>
+        </div>
+        <h3 class="card-title-index"><%= portfolio.title %></h3>
+        <div class="card-overlay-index">
+          <p class="overlay-tags-index"><%= portfolio.tags %></p>
+          <p class="overlay-price-index"><%= number_to_currency(portfolio.price_per_day) %> par jour</p>
+        </div>
+      </div>
+    </a>
+  <% end %>
+</div>
+
+<script>
+function filterCards() {
+    let input = document.getElementById("tagSearch").value.toLowerCase();
+    let cards = document.querySelectorAll(".carousel-card-index");
+
+    cards.forEach(card => {
+        let tags = card.getAttribute("data-tags");
+        if (tags.includes(input) || input === "") {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+
+    // Recalcul de la grille après filtrage
+    let visibleCards = document.querySelectorAll(".carousel-card-index:not([style*='display: none'])");
+    let container = document.querySelector(".carousel-container-index");
+
+    if (visibleCards.length === 0) {
+        container.style.display = "none";
+    } else {
+        container.style.display = "grid";
+    }
+}
+</script>
+
+<!-- BOUTONS AJOUTER -->
+<div style="padding: 10px; text-align: center;">
+  <button class="button-29" role="button">
+    <%= link_to "Add a portfolio", new_portfolio_path %>
+  </button>
+</div>

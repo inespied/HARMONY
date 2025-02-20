@@ -7,18 +7,18 @@
     <%= csp_meta_tag %>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", media: 'all', "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
       document.addEventListener("turbo:load", function() {
-        lucide.createIcons(); 
+        lucide.createIcons();
       });
     </script>
   </head>
 
-  <body style="margin: 0; padding: 0; height: 100vh;"
+  <body style="margin: 0; padding: 0; height: 100%;"
         class="d-flex flex-column bg-black text-white">
 
     <header class="flex-shrink-0">
@@ -30,3 +30,8 @@
   </body>
 </html>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
+
+<footer class="gif-container">
+  <div><%= image_tag 'Harmony.gif', style: 'height:200px; width:200px;' %></div>
+  <div><p>Art Reveal Corp©</p></div>
+</footer>

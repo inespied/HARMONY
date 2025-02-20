@@ -1,28 +1,101 @@
-<div class="text-homepage"><% if user_signed_in? %>
-    <h2>Bienvenue <%= current_user.first_name %> !</h2>
-<% else %>
-    <h2>Connecte-toi pour louer une playlist :)</h2>
-<% end %>
-<%= image_tag 'note_music.gif', style: 'height:60px; width:60px;' %>
-</div>
+<!-- BANDEAU DE LA HOME -->
 
-<div class="text-homepage">
-<h4>L'identité sonore, c'est important 🎼</h4>
-<h4>Accède aux meilleures playlists correspondant à l'ambiance de ton shop :</h4></div>
+<div id="bandeau-homepage">
+  <div class="text-homepage"><% if user_signed_in? %>
+      <h1 id="text-bandeau-homepage">Bienvenue <%= current_user.first_name %> !</h1>
+  <% else %>
+      <h1 id="text-bandeau-homepage">Connecte-toi pour louer une playlist ☻</h1>
+  <% end %>
+  </div>
 
-
-<% @portfolios.take(3).each do |portfolio| %>
-<div class="card-portfolio">
-  <% if portfolio.photo.attached? %>
-    <%= cl_image_tag portfolio.photo.key, height: 300, width: 300, crop: :fill %>
-    <% end %>
-  <div class="card-portfolio-infos">
-   <h2><%= link_to portfolio.title, portfolio_path(portfolio) %></h2>
-   <p><%= portfolio.tags %></p>
+  <div class="text-homepage">
+  <h4 id="text-bandeau-homepage" style="font-weight: 300;">L'identité sonore, c'est important ♫</h4>
+  <h4 id="text-bandeau-homepage" style="font-weight: 300;">Grâce à Harmony, transforme ton espace en expérience musicale</h4>
   </div>
 </div>
-<% end %>
 
+  <h2 id="text-bandeau-homepage" style="font-weight: 300; text-align: center;">Découvre nos playlists pensées pour sublimer ton lieu :</h2>
+<!-- CAROUSEL DE LA HOME -->
+<div class="carousel-container">
 
-<%= link_to "Tous les portfolios par ici !", portfolios_path , class: "text-homepage" %>
-<%= link_to 'Voir les Réservations', portfolio_bookings_path(@portfolio), class: "btn btn-info btn-sm ms-2"  %>
+  <!-- Flèche gauche -->
+  <div class="carousel-arrow left" onclick="moveCarousel('left')">&#9664;</div>
+  <!-- Wrapper des cartes -->
+  <div class="carousel-wrapper">
+    <% @portfolios.each do |portfolio| %>
+      <div class="carousel-card" data-url="<%= portfolio_path(portfolio) %>">
+        <div class="card-image-wrapper">
+          <% if portfolio.photo.attached? %>
+            <%= cl_image_tag portfolio.photo.key, height: 300, width: 400, crop: :fill, class: "card-image" %>
+          <% else %>
+            <div class="card-image-placeholder">
+              <span>Image non disponible</span>
+            </div>
+          <% end %>
+        </div>
+        <h3 class="card-title"><%= portfolio.title %></h3>
+        <div class="card-overlay">
+          <p class="overlay-tags"><%= portfolio.tags %></p>
+          <p class="overlay-price"><%= number_to_currency(portfolio.price_per_day) %> par jour</p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Flèche droite -->
+  <div class="carousel-arrow right" onclick="moveCarousel('right')">&#9654;</div>
+
+</div>
+
+<script>
+document.querySelectorAll(".carousel-card").forEach(card => {
+    card.addEventListener("click", function() {
+        let url = this.getAttribute("data-url");
+        if (url) {
+            window.location.href = url;
+        }
+    });
+});
+
+document.addEventListener("turbo:load", function() {
+  const carouselWrapper = document.querySelector('.carousel-wrapper');
+  const cards = document.querySelectorAll('.carousel-card');
+  const totalCards = cards.length;
+  const cardWidth = cards[0].offsetWidth + 20;
+  let currentIndex = 0;
+
+  // Fonction pour déplacer le carrousel à gauche
+  function moveCarousel(direction) {
+    if (direction === 'left') {
+      if (currentIndex > 0) {
+        currentIndex--;
+      }
+    } else if (direction === 'right') {
+      if (currentIndex < totalCards - 1) {
+        currentIndex++;
+      }
+    }
+    carouselWrapper.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+  }
+
+  const leftArrow = document.querySelector('.carousel-arrow.left');
+  const rightArrow = document.querySelector('.carousel-arrow.right');
+
+  leftArrow.addEventListener('click', function() {
+    moveCarousel('left');
+  });
+
+  rightArrow.addEventListener('click', function() {
+    moveCarousel('right');
+  });
+});
+</script>
+
+<!-- BOUTONS EN BAS DE LA HOME -->
+<div class="div-portfolio">
+<button class="button-29" role="button" ><%= link_to "Tous les portfolios par ici !", portfolios_path , class: "text-homepage" %></button>
+</div>
+
+<div class="div-reservation">
+<button class="button-89" role="button"><%= link_to 'Voir mes réservations', portfolio_bookings_path(@portfolio)%></button>
+</div>

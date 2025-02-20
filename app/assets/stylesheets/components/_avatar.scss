@@ -1,20 +1,25 @@
-.avatar {
+.avatar, .avatar-large, .avatar-bordered {
   width: 40px;
+  height: 40px;
   border-radius: 50%;
+  object-fit: cover; /* Permet de ne pas étirer l'image et de garder le centre */
+  object-position: center; /* Centre l'image dans le cercle */
 }
+
 .avatar-large {
   width: 56px;
-  border-radius: 50%;
+  height: 56px;
 }
+
 .avatar-bordered {
-  width: 40px;
-  border-radius: 50%;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   border: white 1px solid;
 }
+
 .avatar-square {
   width: 40px;
-  border-radius: 0px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  height: 40px;
+  border-radius: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   border: white 1px solid;
 }
