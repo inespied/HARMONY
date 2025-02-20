@@ -3,5 +3,5 @@
   <%= f.input :tags, collection: Portfolio::TAG_OPTIONS %>
   <%= f.input :price_per_day, input_html: { type: 'number', required: true } %>
   <%= f.input :photo, as: :file %>
-  <%= f.submit %>
+  <%= f.submit "Créer le portfolio", class: "button-29", role:"button" %>
 <% end %>

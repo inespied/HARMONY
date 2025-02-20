@@ -1,0 +1,109 @@
+/*
+BOUTON FUNKY POUR PORTFOLIO
+<button class="button-29" role="button"> BUTTON</button>
+*/
+.button-29 {
+  padding: 0.4em 1.2em;
+  border: none;
+  outline: none;
+  color: rgb(255, 255, 255);
+  background: black;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 70px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  font-size: 1rem;
+}
+
+.button-29:before {
+  content: "";
+  background: linear-gradient(
+    45deg,
+    #ff0000,
+    #ff7300,
+    #fffb00,
+    #48ff00,
+    #00ffd5,
+    #002bff,
+    #7a00ff,
+    #ff00c8,
+    #ff0000
+  );
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  -webkit-filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing-button-29 20s linear infinite;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 70px;
+}
+
+@keyframes glowing-button-29 {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 400% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.button-29:after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: black;
+  left: 0;
+  top: 0;
+  border-radius: 70px;
+}
+
+
+/*
+BOUTON CLASSIQUE POUR BOOKING
+<button class="button-89" role="button"> BUTTON</button>
+*/
+.button-89 {
+  background-color: black;
+  border: 1px solid #d5d9d9;
+  border-radius: 70px;
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+  box-sizing: border-box;
+  color: #0f1111;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Amazon Ember",sans-serif;
+  font-size: 13px;
+  line-height: 29px;
+  padding: 0 10px 0 11px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  width: 200px;
+}
+
+.button-89:hover {
+  background-color: #FF7F11;
+}
+
+.button-89:focus {
+  border-color: #008296;
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+  outline: 0;
+}

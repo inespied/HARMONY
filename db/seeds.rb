@@ -5,6 +5,7 @@ Song.destroy_all
 User.destroy_all
 
 genres = Portfolio::TAG_OPTIONS
+moods = ["Luxurious", "Energetic", "Chill", "Elegant", "Vibrant", "Smooth", "Dynamic", "Refreshing", "Mysterious", "Romantic", "Nostalgic", "Casual", "Playful", "Intense", "Peaceful"]
 
 # Seed pour la table users
 user_data = [
@@ -41,7 +42,7 @@ user_data = [
     new_user.save!
   end
 
-  # Seed pour la table songs
+# Seed pour la table songs
 songs = [
     { artist_name: "Adele", song_title: "Hello", duration_in_second: 295, genre: "Pop" },
     { artist_name: "The Beatles", song_title: "Hey Jude", duration_in_second: 431, genre: "Rock" },
@@ -69,21 +70,32 @@ songs.each do |song|
     )
   end
 
-  #Seed des portfolios
-  genres.each_with_index do |genre, i|
-    portfolio = Portfolio.new(
-      title: "#{genres.sample} Portfolio",
-      tags: genres.sample,
-      user_id: User.all.sample.id,
-      price_per_day: 50 + (i * 10)
-    )
-    portfolio.photo.attach(
-      io: File.open("app/assets/images/Portfolio#{rand(1..15)}.jpg"),
-      filename: portfolio.title,
-      content_type: "image/jpg"
-    )
-    portfolio.save!
-  end
+
+# Seed des portfolios
+photos = Dir["app/assets/images/Portfolio*.jpg"].shuffle # Récupère les chemins des photos disponibles et les mélange
+
+moods.shuffle.each_with_index do |mood, i|
+  # Assurez-vous qu'il reste encore des photos disponibles
+  break if photos.empty?
+
+  portfolio = Portfolio.new(
+  title: "#{mood} Portfolio", # Utilise le mot du mood mélangé
+  tags: genres.sample,
+  user_id: User.all.sample.id,
+  price_per_day: 50 + (i * 10)
+  )
+
+  # Utiliser la première photo du tableau, puis la retirer pour qu'elle ne soit pas réutilisée
+  photo_path = photos.pop
+
+  portfolio.photo.attach(
+  io: File.open(photo_path),
+  filename: File.basename(photo_path),
+  content_type: "image/jpg"
+  )
+
+  portfolio.save!
+end
 
   # Seed pour la table portfolio_songs
   15.times do |i|
