@@ -1,0 +1,41 @@
+<!-- app/views/portfolios/_new_song_modal.html.erb -->
+
+<%= render "shared/modal",
+           modal_id: "newSongModal",
+           title: "Ajouter un titre",
+           buttons: [
+             button_tag("Ajouter",
+                        type: "submit",
+                        form: "new_portfolio_song_form",
+                        style: "
+                          display: inline-block;
+                          border: 2px solid #fff;
+                          background: #fff;
+                          color: #000;
+                          padding: 10px 20px;
+                          font-size: 1rem;
+                          font-weight: 500;
+                          cursor: pointer;
+                          transition: transform 0.2s ease-in-out;
+                          border-radius: 75px;
+                          text-decoration: none;
+                        ",
+                        onmouseover: "this.style.transform='scale(1.05)';",
+                        onmouseout: "this.style.transform='scale(1)';"
+             )
+           ] do %>
+
+  <%= form_with model: [portfolio, portfolio_song],
+                url: portfolio_portfolio_songs_path(portfolio),
+                method: :post,
+                html: { id: "new_portfolio_song_form" },
+                local: true do |f| %>
+    <div class="mb-3">
+      <%= f.label :song_id, "Titre", class: "form-label" %>
+      <%= f.select :song_id,
+                   Song.all.collect { |s| [ "#{s.song_title} - #{s.artist_name}", s.id ] },
+                   { prompt: "Choisis un titre" },
+                   class: "form-select" %>
+    </div>
+  <% end %>
+<% end %>

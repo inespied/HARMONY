@@ -32,15 +32,16 @@
         </svg>
       </button>
 
-      <!-- Bouton + (si portfolio.user == current_user) -->
+      <!-- Bouton + pour ouvrir la modal d'ajout d'un titre -->
       <% if @portfolio.user == current_user %>
-        <%= link_to new_portfolio_portfolio_song_path(@portfolio),
-          style: "width: 40px; height: 40px; border: none; background: transparent; color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 500; border-radius: 50%; cursor: pointer; transition: transform 0.2s ease-in-out, background-color 0.2s; text-decoration: none; margin-right: 10px;",
-          onmouseover: "this.style.transform='scale(1.05)';this.style.backgroundColor='rgba(255,255,255,0.2)';",
-          onmouseout: "this.style.transform='scale(1)';this.style.backgroundColor='transparent';",
-          class: "me-3" do %>
+        <button type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#newSongModal"
+                style="width: 40px; height: 40px; border: none; background: transparent; color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 500; border-radius: 50%; cursor: pointer; transition: transform 0.2s ease-in-out, background-color 0.2s; margin-right: 10px;"
+                onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='rgba(255,255,255,0.2)';"
+                onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='transparent';">
           <i data-lucide="plus"></i>
-        <% end %>
+        </button>
       <% end %>
 
       <!-- Bloc recherche -->
@@ -112,12 +113,23 @@
           </script>
         <% end %>
       <% else %>
-        <div class="d-flex flex-column align-items-center justify-content-center h-100">
-          <p class="text-white fs-4">Commencez à ajouter des musiques à la playlist</p>
-          <%= link_to new_portfolio_portfolio_song_path(@portfolio), class: "btn btn-outline-light mt-3" do %>
-            <i class="bi bi-plus-lg"></i> Add Song
-          <% end %>
-        </div>
+        <% if @portfolio.user == current_user %>
+          <div class="d-flex flex-column align-items-center justify-content-center h-100">
+            <p class="text-white fs-4">Commencez à ajouter des musiques à la playlist</p>
+            <!-- Bouton pour ouvrir la modal d'ajout d'un titre -->
+            <button type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#newSongModal"
+                    class="btn btn-outline-light mt-3"
+                    style="display: inline-block; padding: 10px 20px; font-size: 1rem; font-weight: 500; border-radius: 75px;">
+              <i class="bi bi-plus-lg"></i> Add Song
+            </button>
+          </div>
+        <% else %>
+          <div class="d-flex flex-column align-items-center justify-content-center h-100">
+            <p class="text-white fs-4">Cette playlist est vide pour le moment</p>
+          </div>
+        <% end %>
       <% end %>
     </div>
   </div>
@@ -125,195 +137,10 @@
 
 <!-- =================== MODALES =================== -->
 <% content_for :modals do %>
-
-  <!-- Modal d'édition (utilise la partial générique) -->
-  <%= render "shared/modal", 
-             modal_id: "editPlaylistModal", 
-             title: "Éditer la playlist", 
-             buttons: [
-               button_tag("Supprimer le portfolio",
-                          type: "button",
-                          style: "
-                            display: inline-block;
-                            border: 1px solid rgba(255,0,0,0.5);
-                            background: transparent;
-                            color: #ff5555;
-                            padding: 10px 20px;
-                            font-size: 1rem;
-                            font-weight: 500;
-                            cursor: pointer;
-                            transition: transform 0.2s ease-in-out, border-color 0.2s ease-in-out;
-                            border-radius: 75px;
-                            text-decoration: none;
-                          ",
-                          onmouseover: "this.style.transform='scale(1.05)'; this.style.borderColor='#ff5555';",
-                          onmouseout: "this.style.transform='scale(1)'; this.style.borderColor='rgba(255,0,0,0.5)';",
-                          data: { bs_toggle: "modal", bs_target: "#confirmDeleteModal" }
-               ),
-               button_tag("Enregistrer",
-                          type: "submit",
-                          form: "edit_portfolio",
-                          style: "
-                            display: inline-block;
-                            border: 2px solid #fff;
-                            background: #fff;
-                            color: #000;
-                            padding: 10px 20px;
-                            font-size: 1rem;
-                            font-weight: 500;
-                            cursor: pointer;
-                            transition: transform 0.2s ease-in-out;
-                            border-radius: 75px;
-                            text-decoration: none;
-                          ",
-                          onmouseover: "this.style.transform='scale(1.05)';",
-                          onmouseout: "this.style.transform='scale(1)';"
-               )
-             ] do %>
-
-    <%= form_with model: @portfolio,
-                  url: portfolio_path(@portfolio),
-                  method: :patch,
-                  html: { id: "edit_portfolio", multipart: true },
-                  local: true do |f| %>
-
-      <!-- Label "Bannière" + image avec overlay -->
-      <div class="mb-3">
-        <%= f.label :banner, "Bannière", class: "form-label" %>
-        <div style="position: relative; width:150px; height:150px; margin-bottom:1rem;">
-          <img id="photoPreview"
-               data-initial-src="<%= @portfolio.photo.attached? ? url_for(@portfolio.photo) : '/images/default.png' %>"
-               src="<%= @portfolio.photo.attached? ? url_for(@portfolio.photo) : '/images/default.png' %>"
-               style="width:150px; height:150px; object-fit:cover; border-radius:1rem;" />
-          <div class="overlay"
-               style="
-                 position:absolute; top:0; left:0; right:0; bottom:0;
-                 display:flex; align-items:center; justify-content:center;
-                 background:rgba(0,0,0,0.5); color:#fff; opacity:0;
-                 transition: opacity 0.2s; border-radius:1rem; cursor:pointer;
-               "
-               onclick="document.getElementById('photoInput').click()">
-            <i data-lucide="pencil" style="width:24px; height:24px;"></i>
-          </div>
-        </div>
-      </div>
-
-      <!-- Input file caché -->
-      <%= f.file_field :photo, id: "photoInput", style: "display:none;" %>
-
-      <!-- Champ Titre -->
-      <div class="mb-3">
-        <%= f.label :title, "Titre de la playlist", class: "form-label" %>
-        <%= f.text_field :title, class: "form-control" %>
-      </div>
-
-      <!-- Champ Genre -->
-      <div class="mb-3">
-        <%= f.label :tags, "Genre", class: "form-label" %>
-        <%= f.select :tags, Portfolio::TAG_OPTIONS, {}, class: "form-select" %>
-      </div>
-    <% end %>
-
-    <script>
-      document.addEventListener("turbo:load", function() {
-        const modal = document.getElementById("editPlaylistModal");
-        if (!modal) return;
-        
-        let formSubmitted = false;
-        const form = document.getElementById("edit_portfolio");
-        if (form) {
-          form.addEventListener("submit", function() {
-            formSubmitted = true;
-          });
-        }
-        
-        // Gestion de l'overlay sur la photo
-        const photoPreview = document.getElementById("photoPreview");
-        const photoInput = document.getElementById("photoInput");
-        const overlay = modal.querySelector(".overlay");
-        if (photoPreview && overlay) {
-          const container = photoPreview.parentNode;
-          container.addEventListener("mouseenter", function() {
-            overlay.style.opacity = 1;
-          });
-          container.addEventListener("mouseleave", function() {
-            overlay.style.opacity = 0;
-          });
-        }
-        if (photoInput && photoPreview) {
-          photoInput.addEventListener("change", function(e) {
-            const file = e.target.files[0];
-            if (file) {
-              const reader = new FileReader();
-              reader.onload = function(ev) {
-                photoPreview.src = ev.target.result;
-              };
-              reader.readAsDataURL(file);
-            }
-          });
-        }
-        
-        // Réinitialisation du formulaire lors de la fermeture de la modal
-        modal.addEventListener("hidden.bs.modal", function() {
-          if (!formSubmitted && form) {
-            form.reset();
-          }
-          if (photoPreview) {
-            photoPreview.src = photoPreview.dataset.initialSrc;
-          }
-          formSubmitted = false;
-        });
-      });
-    </script>
-  <% end %>
-
-  <!-- Modal de confirmation de suppression (utilise la partial générique) -->
-  <%= render "shared/modal", 
-             modal_id: "confirmDeleteModal", 
-             title: "Supprimer le portfolio", 
-             buttons: [
-               button_tag("Annuler",
-                          type: "button",
-                          data: { bs_dismiss: "modal" },
-                          style: "
-                            display: inline-block;
-                            border: 1px solid rgba(255,255,255,0.5);
-                            background: transparent;
-                            color: #fff;
-                            padding: 10px 20px;
-                            font-size: 1rem;
-                            font-weight: 500;
-                            cursor: pointer;
-                            transition: transform 0.2s ease-in-out, border-color 0.2s;
-                            border-radius: 75px;
-                          ",
-                          onmouseover: "this.style.transform='scale(1.05)'; this.style.borderColor='#fff';",
-                          onmouseout: "this.style.transform='scale(1)'; this.style.borderColor='rgba(255,255,255,0.5)';"
-               ),
-               link_to("Confirmer",
-                       portfolio_path(@portfolio),
-                       method: :delete,
-                       data: { turbo_method: :delete },
-                       style: "
-                         display: inline-block;
-                         border: none;
-                         background: #ff5555;
-                         color: #fff;
-                         padding: 10px 20px;
-                         font-size: 1rem;
-                         font-weight: 500;
-                         cursor: pointer;
-                         transition: transform 0.2s ease-in-out;
-                         border-radius: 75px;
-                         text-decoration: none;
-                       ",
-                       onmouseover: "this.style.transform='scale(1.05)';",
-                       onmouseout: "this.style.transform='scale(1)';"
-               )
-             ] do %>
-    <p style="color: #fff; font-size: 1rem; margin: 1rem 0;">
-      Êtes-vous sûr de vouloir supprimer ce portfolio ? Cette action est irréversible.
-    </p>
-  <% end %>
-
+  <!-- Modal d'édition -->
+  <%= render "portfolios/edit_modal", portfolio: @portfolio %>
+  <!-- Modal de confirmation de suppression -->
+  <%= render "portfolios/confirm_delete_modal", portfolio: @portfolio %>
+  <!-- Modal d'ajout d'un titre -->
+  <%= render "portfolios/new_song_modal", portfolio: @portfolio, portfolio_song: @portfolio_song %>
 <% end %>

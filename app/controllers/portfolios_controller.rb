@@ -20,6 +20,7 @@ class PortfoliosController < ApplicationController
   def show
     @portfolio = Portfolio.find(params[:id])
     @songs = @portfolio.songs
+    @portfolio_song = @portfolio.portfolio_songs.build
   end
 
   def destroy
