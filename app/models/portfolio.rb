@@ -1,6 +1,6 @@
 class Portfolio < ApplicationRecord
   belongs_to :user
-  has_many :bookings
+  has_many :bookings, dependent: :destroy
   has_many :portfolio_songs, dependent: :destroy
   has_many :songs, through: :portfolio_songs
   has_one_attached :photo
