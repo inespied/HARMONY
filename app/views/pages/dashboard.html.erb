@@ -1,21 +1,117 @@
-<div class="card-portfolio" >
-<h1> Ton dashboard</h1>
+
+
+
+<div class="card-portfolio" style="text-align: center; padding: 15px;" >
+<h1> Ton <span class="rainbow-text">Tableau de Bord</span></h1>
 </div>
 
 <div>
-<h3>Tes bookings :</h3>
-<%= @bookings.all %>
+<h3 style="text-align: center; padding: 20px;">Tes réservations :</h3>
 </div>
 
-<div>
-<h3>Tes portfolios :</h3>
-<% @portfolios.take(1).each do |portfolio| %>
-<div class="card-portfolio">
-  <%= cl_image_tag(portfolio.photo.key, width: 200, height: 150, crop: :fill)%>
-  <div class="card-portfolio-infos">
-   <h2><%= link_to portfolio.title, portfolio_path(portfolio) %></h2>
-   <p><%= portfolio.tags %></p>
+<div class="flex-grow-1 px-4 pb-2" style="background-color: #212121; height: 48vh; overflow-y: scroll;">
+  <% if @bookings.present? %>
+  <% @bookings.each_with_index do |booking, index| %>
+  <% next if booking.nil? || booking.user.nil? || booking.portfolio.nil? || booking.portfolio.user.nil? %> <%# Sécurisation %>
+
+  <% formatted_start_date = booking.start_date&.strftime("%d/%m/%Y") || "Date inconnue" %>
+  <% formatted_end_date = booking.end_date&.strftime("%d/%m/%Y") || "Date inconnue" %>
+  <% formatted_total_price = booking.total_price.present? ? "#{booking.total_price}€" : "Prix inconnu" %>
+
+  <!-- Définition des couleurs du statut -->
+  <% status_class = case booking.status
+  when "confirmed" then "text-success"
+  when "pending" then "text-warning"
+  when "cancelled" then "text-danger"
+  else "text-white-50"
+  end %>
+
+  <div class="d-flex align-items-center px-4 py-2 booking-row">
+  <div style="margin-right: 1rem;"><%= index + 1 %></div>
+
+  <div class="me-auto">
+  <strong>Réservé par : <%= booking.user.first_name %></strong><br>
+  <small class="text-white-50">Du <%= formatted_start_date %> au <%= formatted_end_date %></small><br>
+  <small class="<%= status_class %>">Statut : <%= booking.status.capitalize %></small><br>
+  <small class="text-white-50">Créé par : <%= booking.portfolio.user.first_name %></small>
   </div>
+
+  <div class="text-white-50" style="width: 80px; text-align: right; margin-right: 1rem;">
+  <%= formatted_total_price %>
+  </div>
+
+  <% if @portfolio&.user == current_user %>
+  <div class="booking-delete" style="display: none;">
+  <%= link_to "✕", portfolio_booking_path(@portfolio, booking), data: { turbo_method: :delete }, class: "text-danger fs-4 text-decoration-none" %>
+  </div>
+  <% end %>
+  </div>
+  <% end %>
+  <% else %>
+  <p class="text-white-50 text-center py-3">Aucune réservation trouvée.</p>
+  <% end %>
 </div>
-<% end %>
+
+<!-- BOUTONS AJOUTER -->
+<div style="padding: 30px; text-align: center;">
+  <button class="button-29" role="button">
+    <%= link_to "Voir tous les portfolios pour en louer", portfolios_path %>
+  </button>
+</div>
+
+
+<div>
+<h3 style="text-align: center; padding: 60px 20px 20px 20px;">Tes portfolios :</h3>
+</div>
+
+<div class="flex-grow-1 px-4 pb-2" style="background-color: #212121; height: 48vh; overflow-y: scroll;">
+  <% if @portfolios.present? %>
+  <% @portfolios.each_with_index do |portfolio, index| %>
+  <% next if portfolio.nil? || portfolio.user.nil? %> <%# Sécurisation contre les valeurs nil %>
+
+  <% formatted_price = portfolio.price_per_day.present? ? "#{portfolio.price_per_day}€/jour" : "Prix non défini" %>
+  <% tags_display = portfolio.tags.present? ? portfolio.tags : "Aucun tag" %>
+  <% formatted_creation_date = portfolio.created_at.strftime("%d/%m/%Y") %>
+
+  <div class="d-flex align-items-center px-4 py-2 portfolio-row">
+  <!-- Miniature de l'image du portfolio via Cloudinary -->
+  <div style="width: 50px; height: 50px; margin-right: 1rem; flex-shrink: 0;">
+  <% if portfolio.photo.attached? %>
+  <%= cl_image_tag portfolio.photo.key, height: 50, width: 50, crop: :fill, class: "rounded" %>
+  <% else %>
+  <%= image_tag "default-image.jpg", class: "rounded", style: "width: 50px; height: 50px; object-fit: cover;" %>
+  <% end %>
+  </div>
+
+  <div class="me-auto">
+  <strong>
+  <%= link_to portfolio.title, portfolio_path(portfolio), class: "text-decoration-none text-white" %>
+  </strong><br>
+  <small class="text-white-50">
+  Créé par : <%= portfolio.user.first_name %> - <%= formatted_creation_date %>
+  </small><br>
+  <small class="text-white-50">Tags : <%= tags_display %></small>
+  </div>
+
+  <div class="text-white-50" style="width: 100px; text-align: right; margin-right: 1rem;">
+  <%= formatted_price %>
+  </div>
+
+  <% if portfolio.user == current_user %>
+  <div class="portfolio-delete" style="display: none;">
+  <%= link_to "✕", portfolio_path(portfolio), data: { turbo_method: :delete }, class: "text-danger fs-4 text-decoration-none" %>
+  </div>
+  <% end %>
+  </div>
+  <% end %>
+  <% else %>
+  <p class="text-white-50 text-center py-3">Aucun portfolio trouvé.</p>
+  <% end %>
+</div>
+
+<!-- BOUTONS AJOUTER -->
+<div style="padding: 30px; text-align: center;">
+  <button class="button-29" role="button">
+    <%= link_to "Créer un portfolio", new_portfolio_path %>
+  </button>
 </div>

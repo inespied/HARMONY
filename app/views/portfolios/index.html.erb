@@ -1,7 +1,7 @@
-<div><h1 style="text-align: center; padding: 50px;">Tous nos portfolios :</h1></div>
+<div><h1 style="text-align: center; padding: 50px;">Tous nos <span class="rainbow-text">portfolios :</span></h1></div>
 
 <!-- BARRE DE RECHERCHE -->
-<div style="padding: 10px; text-align: center;">
+<div style="padding: 100px 20px 100px 20px; text-align: center;">
   <input type="text" id="tagSearch" placeholder="Recherche par tag" onkeyup="filterCards()">
 </div>
 
@@ -56,8 +56,8 @@ function filterCards() {
 </script>
 
 <!-- BOUTONS AJOUTER -->
-<div style="padding: 10px; text-align: center;">
+<div style="padding: 100px 20px 100px 20px; text-align: center;">
   <button class="button-29" role="button">
-    <%= link_to "Add a portfolio", new_portfolio_path %>
+    <%= link_to "Créer un portfolio", new_portfolio_path %>
   </button>
 </div>

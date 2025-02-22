@@ -2,7 +2,11 @@
 
 <div id="bandeau-homepage">
   <div class="text-homepage"><% if user_signed_in? %>
-      <h1 id="text-bandeau-homepage">Bienvenue <span class="rainbow-text"><%= current_user.first_name %></span> !</h1>
+  <h1 style="text-align: center; font-size: 4rem;">Ta <span class="rainbow-text" style="text-align: center; font-size: 4rem;">musique</span>. Ton <span class="rainbow-text" style="text-align: center; font-size: 4rem;">style</span>. Ton <span class="rainbow-text" style="text-align: center; font-size: 4rem;">lieu</span>.</h1>
+
+  <div class="gif-homepage"><%= image_tag "sound.gif", alt: "Sound image" %></div>
+
+  <h1 id="text-bandeau-homepage">Bienvenue <span class="rainbow-text"><%= current_user.first_name %></span> !</h1>
   <% else %>
       <h1 id="text-bandeau-homepage">Connecte-toi pour louer une playlist ☻</h1>
   <% end %>
@@ -41,7 +45,7 @@
         <h3 class="card-title"><%= portfolio.title %></h3>
         <div class="card-overlay">
           <p class="overlay-tags"><%= portfolio.tags %></p>
-          <p class="overlay-price"><%= number_to_currency(portfolio.price_per_day) %> par jour</p>
+          <p class="overlay-price"><%= number_to_currency(portfolio.price_per_day) %>/jour</p>
         </div>
       </div>
     <% end %>
@@ -99,6 +103,6 @@ document.addEventListener("turbo:load", function() {
 
 
 <div class="div-reservation">
-<button class="button-89" role="button"><%= link_to 'Voir mes réservations', portfolio_bookings_path(@portfolio)%></button>
+<button class="button-89" role="button"><%= link_to 'Voir mes réservations', dashboard_path(@portfolio)%></button>
 </div>
 <div style="padding: 100px"></div>
