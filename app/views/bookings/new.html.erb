@@ -26,3 +26,13 @@
     <%= f.submit "Envoyer la demande", class: 'btn btn-primary' %>
   <% end %>
 </div>
+<% if @booking.errors.any? %>
+  <div class="alert alert-danger">
+    <h4>Des erreurs ont empêché la création de la réservation :</h4>
+    <ul>
+      <% @booking.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

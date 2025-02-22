@@ -3,4 +3,3 @@ import "controllers"
 import "@popperjs/core"
 import "bootstrap"
 import "./components/control_bar"
-//= require rails-ujs

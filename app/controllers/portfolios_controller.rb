@@ -8,9 +8,9 @@ class PortfoliosController < ApplicationController
   end
 
   def create
-    @new_portfolio = Portfolio.new(portfolio_params)
     @new_portfolio.user = current_user
     if @new_portfolio.save
+      current_user.update(role: :portfolio)
       redirect_to portfolio_path(@new_portfolio), notice: "Playlist créée avec succès !"
     else
       # On réaffiche la modal => on peut re-render la vue qui contient la partial
