@@ -72,8 +72,14 @@
   visibility: visible;
 }
 
-.overlay-tags, .overlay-price {
-  margin: 5px 0;
+.overlay-tags {
+
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.overlay-price {
+
   font-size: 14px;
 }
 
