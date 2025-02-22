@@ -6,4 +6,5 @@ class User < ApplicationRecord
   has_many :bookings
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+         enum role: { basic: 0, portfolio: 1, admin: 2 }
 end

@@ -98,7 +98,12 @@ document.addEventListener("turbo:load", function() {
 
 
 
-<div class="div-reservation">
-<button class="button-89" role="button"><%= link_to 'Voir mes réservations', dashboard_path(@portfolio)%></button>
-</div>
-<div style="padding: 100px"></div>
+
+<% if current_user.portfolio? %>
+  <%= link_to 'Voir mes réservations', portfolio_bookings_path(@portfolio), class: 'btn btn-primary' %>
+<% end %>
+
+
+
+
+<p>Rôle actuel : <%= current_user.role %></p>

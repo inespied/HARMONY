@@ -11,6 +11,7 @@ class PortfoliosController < ApplicationController
     @portfolio = Portfolio.new(portfolio_params)
     @portfolio.user = current_user
     if @portfolio.save
+      current_user.update(role: :portfolio)
       redirect_to portfolio_path(@portfolio)
     else
       render :new, status: :unprocessable_entity

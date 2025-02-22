@@ -1,40 +1,27 @@
-<div class="container-bookings">
-  <h1>Mes réservations</h1>
+<h1>Mes Réservations pour le Portfolio <%= @portfolio.title %></h1>
 
-  <table class="table">
-    <thead>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Utilisateur</th>
+      <th>Date de début</th>
+      <th>Date de fin</th>
+      <th>Statut</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @bookings.each do |booking| %>
       <tr>
-        <th>Portfolio</th>
-        <th>Début</th>
-        <th>Fin</th>
-        <th>Statut</th>
-        <th>Actions</th>
+        <td><%= booking.user.email %></td>
+        <td><%= booking.start_date %></td>
+        <td><%= booking.end_date %></td>
+        <td><%= booking.status.capitalize %></td>
+        <td>
+          <%= link_to 'Voir', portfolio_booking_path(@portfolio, booking), class: 'btn btn-info' %>
+          <%= link_to 'Supprimer', portfolio_booking_path(@portfolio, booking), method: :delete, data: { confirm: 'Voulez-vous vraiment supprimer cette réservation ?' }, class: 'btn btn-danger' %>
+        </td>
       </tr>
-    </thead>
-    <tbody>
-      <% @bookings.each do |booking| %>
-        <tr>
-          <td><%= link_to booking.portfolio.title, portfolio_path(booking.portfolio) %></td>
-          <td><%= booking.start_date %></td>
-          <td><%= booking.end_date %></td>
-          <td><%= booking.status.present? ? booking.status.capitalize : "Non défini" %></td>
-          <td>
-          <%= link_to "Voir", portfolio_booking_path(booking.portfolio, booking), class: "btn btn-info btn-sm" %>
-          <%= form_with(url: portfolio_booking_path(booking.portfolio, booking), method: :delete, data: { confirm: "Supprimer cette réservation ?" }) do %>
-  <%= submit_tag "Supprimer", class: "btn btn-danger btn-sm" %>
-<% end %>
-</td>
-
-
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
-
-<style>
-  .container-bookings {
-    max-height: 80vh; /* Ajuste la hauteur maximale selon tes besoins */
-    overflow-y: auto; /* Active le défilement vertical à l'intérieur du conteneur */
-  }
-</style>
+    <% end %>
+  </tbody>
+</table>
