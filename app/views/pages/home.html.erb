@@ -102,6 +102,10 @@ document.addEventListener("turbo:load", function() {
 
 
 
-<% if current_user.portfolio? %>
-  <%= link_to 'Voir mes réservations', portfolio_bookings_path(@portfolio), class: 'btn btn-primary' %>
-<% end %>
+
+<div class="div-reservation">
+<button class="button-89" role="button"><% if current_user && current_user.portfolios.any? %>
+  <%= link_to 'Voir les réservation de mes portfolios', portfolio_bookings_path(current_user.portfolios.first) %>
+<% end %></button>
+</div>
+<div style="padding: 100px"></div>
