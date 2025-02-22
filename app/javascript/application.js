@@ -2,5 +2,8 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "@popperjs/core"
 import "bootstrap"
-import "./components/control_bar"
+import { initControlbar} from "./components/control_bar"
+
+initControlbar();
+
 //= require rails-ujs
