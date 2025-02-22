@@ -1,0 +1,158 @@
+<!-- app/views/portfolios/_new_playlist_modal.html.erb -->
+
+<%= render "shared/modal",
+           modal_id: "newPlaylistModal",
+           title: "Nouvelle playlist",
+           buttons: [
+             button_tag("Créer la playlist",
+                        type: "submit",
+                        form: "new_portfolio_form",
+                        style: "
+                          display: inline-block;
+                          border: 2px solid #fff;
+                          background: #fff;
+                          color: #000;
+                          padding: 10px 20px;
+                          font-size: 1rem;
+                          font-weight: 500;
+                          cursor: pointer;
+                          transition: transform 0.2s ease-in-out;
+                          border-radius: 75px;
+                          text-decoration: none;
+                        ",
+                        onmouseover: "this.style.transform='scale(1.05)';",
+                        onmouseout: "this.style.transform='scale(1)';"
+             )
+           ] do %>
+
+  <%= form_with model: @new_portfolio,
+                url: portfolios_path,
+                method: :post,
+                html: { id: "new_portfolio_form", multipart: true },
+                local: true do |f| %>
+
+    <!-- Si le modèle a des erreurs, on les affiche -->
+    <% if f.object.errors.any? %>
+      <div style="color: #ff5555; margin-bottom: 1rem;">
+        <% f.object.errors.full_messages.each do |msg| %>
+          <p style="margin:0;"><%= msg %></p>
+        <% end %>
+      </div>
+    <% end %>
+
+    <!-- Champ Titre (obligatoire) -->
+    <div class="mb-3">
+      <%= f.label :title, "Titre de la playlist", class: "form-label" %>
+      <%= f.text_field :title, class: "form-control" %>
+    </div>
+
+    <!-- Champ Genre (obligatoire) -->
+    <div class="mb-3">
+      <%= f.label :tags, "Genre", class: "form-label" %>
+      <%= f.select :tags, Portfolio::TAG_OPTIONS, {}, class: "form-select" %>
+    </div>
+
+    <!-- Champ price_per_day (si vous voulez le rendre obligatoire aussi) -->
+    <div class="mb-3">
+      <%= f.label :price_per_day, "Prix par jour", class: "form-label" %>
+      <%= f.number_field :price_per_day, class: "form-control" %>
+    </div>
+
+    <!-- Champ Photo (obligatoire) avec un contour pointillé -->
+    <div class="mb-3">
+      <%= f.label :photo, "Bannière", class: "form-label" %>
+      <div id="createBannerContainer"
+           style="
+             position: relative;
+             width:150px; height:150px;
+             margin-bottom:1rem;
+             border: 2px dashed #ccc;
+             border-radius: 1rem;
+             background: rgba(255,255,255,0.1);
+             cursor: pointer;
+             transition: border-color 0.2s, background 0.2s;
+           "
+           onmouseover="
+             this.style.borderColor='#fff';
+             this.style.background='rgba(255,255,255,0.2)';
+           "
+           onmouseout="
+             this.style.borderColor='#ccc';
+             this.style.background='rgba(255,255,255,0.1)';
+           "
+           onclick="document.getElementById('createPhotoInput').click()">
+        <!-- Icône "image" de Lucide, centrée -->
+        <i id="createIconImage"
+           data-lucide="image"
+           style="
+             position: absolute;
+             top: 50%; left: 50%;
+             transform: translate(-50%,-50%);
+             width:24px; height:24px;
+             color: #aaa;
+           ">
+        </i>
+        <!-- Preview si un fichier est sélectionné -->
+        <img id="createPhotoPreview"
+             style="
+               display: none;
+               width: 100%;
+               height: 100%;
+               object-fit: cover;
+               border-radius: 1rem;
+             " />
+      </div>
+    </div>
+
+    <!-- Input file caché -->
+    <%= f.file_field :photo, id: "createPhotoInput", style: "display:none;", onchange: "updateCreatePhotoPreview(this)" %>
+  <% end %>
+
+  <script>
+    // Affiche la preview et masque l’icône quand un fichier est choisi
+    function updateCreatePhotoPreview(input) {
+      const preview = document.getElementById("createPhotoPreview");
+      const icon = document.getElementById("createIconImage");
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          preview.src = e.target.result;
+          preview.style.display = "block";
+          icon.style.display = "none";
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    document.addEventListener("turbo:load", function() {
+      const modal = document.getElementById("newPlaylistModal");
+      if (!modal) return;
+
+      let formSubmitted = false;
+      const form = document.getElementById("new_portfolio_form");
+      if (form) {
+        form.addEventListener("submit", function() {
+          formSubmitted = true;
+        });
+      }
+
+      // Réinitialiser le formulaire quand on ferme la modal
+      modal.addEventListener("hidden.bs.modal", function() {
+        if (!formSubmitted && form) {
+          form.reset();
+        }
+        // On réinitialise la preview
+        const preview = document.getElementById("createPhotoPreview");
+        const icon = document.getElementById("createIconImage");
+        if (preview) {
+          preview.src = "";
+          preview.style.display = "none";
+        }
+        if (icon) {
+          icon.style.display = "block";
+        }
+        formSubmitted = false;
+      });
+    });
+  </script>
+<% end %>
