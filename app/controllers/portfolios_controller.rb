@@ -8,11 +8,14 @@ class PortfoliosController < ApplicationController
   end
 
   def create
-    @portfolio = Portfolio.new(portfolio_params)
-    @portfolio.user = current_user
-    if @portfolio.save
-      redirect_to portfolio_path(@portfolio)
+    @new_portfolio = Portfolio.new(portfolio_params)
+    @new_portfolio.user = current_user
+    if @new_portfolio.save
+      redirect_to portfolio_path(@new_portfolio), notice: "Playlist créée avec succès !"
     else
+      # On réaffiche la modal => on peut re-render la vue qui contient la partial
+      # par exemple, si on était sur la home ou la show, on refait un render :index ou :show
+      # Mais pour un code simple :
       render :new, status: :unprocessable_entity
     end
   end

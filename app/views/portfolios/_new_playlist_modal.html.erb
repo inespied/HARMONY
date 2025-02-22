@@ -1,0 +1,138 @@
+<%= render "shared/modal",
+           modal_id: "newPlaylistModal",
+           title: "Nouvelle playlist",
+           buttons: [
+             # Bouton Créer la playlist
+             button_tag("Créer la playlist",
+                        type: "submit",
+                        form: "new_portfolio_form",
+                        style: "
+                          display: inline-block;
+                          border: 2px solid #fff;
+                          background: #fff;
+                          color: #000;
+                          padding: 10px 20px;
+                          font-size: 1rem;
+                          font-weight: 500;
+                          cursor: pointer;
+                          transition: transform 0.2s ease-in-out;
+                          border-radius: 75px;
+                          text-decoration: none;
+                        ",
+                        onmouseover: "this.style.transform='scale(1.05)';",
+                        onmouseout: "this.style.transform='scale(1)';"
+             )
+           ] do %>
+
+  <%= form_with model: portfolio,
+                url: portfolios_path,
+                method: :post,
+                html: { id: "new_portfolio_form", multipart: true },
+                local: true do |f| %>
+
+    <!-- Affichage des erreurs (si l’utilisateur soumet un formulaire incomplet) -->
+    <% if f.object.errors.any? %>
+      <div style="color: #ff5555; margin-bottom: 1rem;">
+        <% f.object.errors.full_messages.each do |msg| %>
+          <p style="margin:0;"><%= msg %></p>
+        <% end %>
+      </div>
+    <% end %>
+
+
+    <!-- Bannière avec preview et overlay -->
+    <div class="mb-3">
+      <%= f.label :photo, "Bannière", class: "form-label" %>
+      <div id="banner-container" style="position: relative; width:150px; height:150px; margin-bottom:1rem;">
+        <img id="photoPreviewNew"
+             style="width:150px; height:150px; object-fit:cover; border-radius:1rem; cursor: pointer;"
+             onclick="document.getElementById('photoInputNew').click()" />
+        <div class="overlay"
+             style="position: absolute; top:0; left:0; right:0; bottom:0;
+                    display: none; align-items: center; justify-content: center;
+                    background: rgba(0,0,0,0.5); color: #fff;
+                    opacity: 0; transition: opacity 0.2s ease-in-out; border-radius:1rem; cursor: pointer;"
+             onclick="document.getElementById('photoInputNew').click()">
+          <i data-lucide="pencil" style="width:24px; height:24px;"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input file caché pour uploader une nouvelle photo -->
+    <%= f.file_field :photo, id: "photoInputNew", style: "display: none;", onchange: "updatePhotoPreviewNew(this)" %>
+
+    <!-- Champ Titre -->
+    <div class="mb-3">
+      <%= f.label :title, "Titre de la playlist", class: "form-label" %>
+      <%= f.text_field :title, class: "form-control" %>
+    </div>
+
+    <!-- Champ Genre -->
+    <div class="mb-3">
+      <%= f.label :tags, "Genre", class: "form-label" %>
+      <%= f.select :tags, Portfolio::TAG_OPTIONS, {}, class: "form-select" %>
+    </div>
+
+    <!-- Champ Price -->
+    <div class="mb-3">
+      <%= f.label :price_per_day, "Price per day", class: "form-label" %>
+      <%= f.number_field :price_per_day, class: "form-control" %>
+    </div>
+  <% end %>
+
+  <!-- Script : preview + overlay + reset form -->
+  <script>
+    // Met à jour la preview de l'image dès qu'un fichier est sélectionné
+    function updatePhotoPreviewNew(input) {
+      const photoPreviewNew = document.getElementById("photoPreviewNew");
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          photoPreviewNew.src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    document.addEventListener("turbo:load", function() {
+      const modal = document.getElementById("newPlaylistModal");
+      if (!modal) return;
+      
+      let formSubmitted = false;
+      let form = document.getElementById("new_portfolio_form");
+      if (form) {
+        form.addEventListener("submit", function() {
+          formSubmitted = true;
+        });
+      }
+      
+      // Gestion du survol sur le conteneur de l'image
+      const container = document.getElementById("banner-container");
+      const overlay = container.querySelector(".overlay");
+      container.addEventListener("mouseenter", function() {
+        overlay.style.display = "flex";
+        overlay.style.opacity = 1;
+      });
+      container.addEventListener("mouseleave", function() {
+        overlay.style.opacity = 0;
+        setTimeout(function() { overlay.style.display = "none"; }, 200);
+      });
+      
+      // Réinitialisation du formulaire et de la preview lors de la fermeture de la modal
+      modal.addEventListener("hidden.bs.modal", function() {
+        if (!formSubmitted && form) {
+          console.log('reset')
+          form.reset();
+        }
+        const photoPreviewNew = document.getElementById("photoPreviewNew");
+        if (photoPreviewNew) {
+              // Assign a 1x1 transparent GIF as the source
+          photoPreviewNew.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+          // Set the background to black so it shows through
+          
+        }
+        formSubmitted = false;
+      });
+    });
+  </script>
+<% end %>
