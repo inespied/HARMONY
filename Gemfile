@@ -5,6 +5,8 @@ gem 'faker'
 gem "cloudinary"
 gem 'terrapin'
 gem "pundit"
+gem 'rack-mini-profiler'
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.1.5", ">= 7.1.5.1"
 
