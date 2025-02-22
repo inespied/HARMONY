@@ -8,9 +8,9 @@ class PagesController < ApplicationController
 
   def dashboard
     #afficher les portoflios attribués au user
-    @portfolios = Portfolio.all
+    @portfolios = Portfolio.where(user: current_user)
 
     #afficher les bookings attribués au user
-    @bookings = Booking.all
+    @bookings = Booking.where(user: current_user)
   end
 end
