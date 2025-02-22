@@ -10,7 +10,7 @@ moods = ["Luxurious", "Energetic", "Chill", "Elegant", "Vibrant", "Smooth", "Dyn
 # Seed pour la table users
 user_data = [
     { email: "john.smith@example.com", first_name: "John", last_name: "Smith", description: "Software Developer and Music Enthusiast.",image_path: "app/assets/images/photo1.jpg"},
-    { email: "emma.jones@example.com", first_name: "Emma", last_name: "Jones", description: "Professional Photographer and Traveler.",image_path: "app/assets/images/photo_moi.png"},
+    { email: "emma.jones@example.com", first_name: "Emma", last_name: "Jones", description: "Owner of a thrift shop in Paris.",image_path: "app/assets/images/photo_moi.png"},
     { email: "michael.brown@example.com", first_name: "Michael", last_name: "Brown", description: "Guitarist and Music Producer.",image_path: "app/assets/images/photo2.jpg" },
     { email: "lucas.miller@example.com", first_name: "Lucas", last_name: "Miller", description: "Food Blogger and Podcaster.",image_path: "app/assets/images/photo3.jpg" },
     { email: "sophia.davis@example.com", first_name: "Sophia", last_name: "Davis", description: "Visual Artist and Designer.",image_path: "app/assets/images/photo4.jpg" },
@@ -82,7 +82,7 @@ moods.shuffle.each_with_index do |mood, i|
   title: "#{mood} Portfolio", # Utilise le mot du mood mélangé
   tags: genres.sample,
   user_id: User.all.sample.id,
-  price_per_day: 50 + (i * 10)
+  price_per_day: 1 + (i * 1)
   )
 
   # Utiliser la première photo du tableau, puis la retirer pour qu'elle ne soit pas réutilisée
@@ -105,14 +105,15 @@ end
     )
   end
 
-  # Seed pour la table bookings
-  15.times do |i|
+# Seed pour la table bookings
+15.times do |i|
+    user = User.where.not(email: 'emma.jones@example.com').sample
     Booking.create!(
-      user_id: User.all.sample.id,
-      portfolio_id: Portfolio.all.sample.id,
-      start_date: "2025-02-14 10:00:00".to_datetime + i.days,
-      end_date: "2025-02-14 18:00:00".to_datetime + i.days,
-      total_price: (200 + i * 10),
-      status: ["declined", "pending", "cancelled","accepted"].sample
+    user_id: user.id,
+    portfolio_id: Portfolio.all.sample.id,
+    start_date: "2025-02-14 10:00:00".to_datetime + i.days,
+    end_date: "2025-02-14 18:00:00".to_datetime + i.days,
+    total_price: (200 + i * 10),
+    status: ["declined", "pending", "cancelled", "accepted"].sample
     )
   end
