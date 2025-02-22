@@ -82,7 +82,7 @@ moods.shuffle.each_with_index do |mood, i|
   title: "#{mood} Portfolio", # Utilise le mot du mood mélangé
   tags: genres.sample,
   user_id: User.all.sample.id,
-  price_per_day: 50 + (i * 10)
+  price_per_day: 1 + i
   )
 
   # Utiliser la première photo du tableau, puis la retirer pour qu'elle ne soit pas réutilisée
@@ -105,14 +105,15 @@ end
     )
   end
 
-  # Seed pour la table bookings
-  15.times do |i|
+# Seed pour la table bookings
+15.times do |i|
+    user = User.where.not(email: 'emma.jones@example.com').sample
     Booking.create!(
-      user_id: User.all.sample.id,
-      portfolio_id: Portfolio.all.sample.id,
-      start_date: "2025-02-14 10:00:00".to_datetime + i.days,
-      end_date: "2025-02-14 18:00:00".to_datetime + i.days,
-      total_price: (200 + i * 10),
-      status: ["declined", "pending", "cancelled","accepted"].sample
+    user_id: user.id,
+    portfolio_id: Portfolio.all.sample.id,
+    start_date: "2025-02-14 10:00:00".to_datetime + i.days,
+    end_date: "2025-02-14 18:00:00".to_datetime + i.days,
+    total_price: (200 + i * 10),
+    status: ["declined", "pending", "cancelled", "accepted"].sample
     )
   end
