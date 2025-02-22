@@ -27,6 +27,9 @@
     <div class="wrapper">
       <%= yield %>
     </div>
+    <% if user_signed_in? %>
+      <%= render "portfolios/new_playlist_modal", portfolio: Portfolio.new %>
+    <% end %>
       <%= yield :modals %>
   </body>
 </html>
