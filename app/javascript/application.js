@@ -2,7 +2,6 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "@popperjs/core"
 import "bootstrap"
-import { initControlbar} from "./components/control_bar_bis"
 
 document.addEventListener("turbo:load", () => {
     const searchToggle = document.querySelector(".search-toggle");
