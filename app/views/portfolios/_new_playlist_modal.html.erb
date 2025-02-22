@@ -42,21 +42,59 @@
 
     <!-- Bannière avec preview et overlay -->
     <div class="mb-3">
-      <%= f.label :photo, "Bannière", class: "form-label" %>
-      <div id="banner-container" style="position: relative; width:150px; height:150px; margin-bottom:1rem;">
-        <img id="photoPreviewNew"
-             style="width:150px; height:150px; object-fit:cover; border-radius:1rem; cursor: pointer;"
-             onclick="document.getElementById('photoInputNew').click()" />
-        <div class="overlay"
-             style="position: absolute; top:0; left:0; right:0; bottom:0;
-                    display: none; align-items: center; justify-content: center;
-                    background: rgba(0,0,0,0.5); color: #fff;
-                    opacity: 0; transition: opacity 0.2s ease-in-out; border-radius:1rem; cursor: pointer;"
-             onclick="document.getElementById('photoInputNew').click()">
-          <i data-lucide="pencil" style="width:24px; height:24px;"></i>
-        </div>
-      </div>
+  <%= f.label :photo, "Bannière", class: "form-label" %>
+  <div id="banner-container"
+       style="
+         position: relative;
+         width: 150px;
+         height: 150px;
+         margin-bottom: 1rem;
+         border: 2px dashed #ccc;          /* Par défaut => pointillés */
+         border-radius: 1rem;
+         background: rgba(255,255,255,0.1);
+         cursor: pointer;
+         transition: border-color 0.2s, background 0.2s;
+       "
+       onmouseover="
+         this.style.borderColor = '#fff';
+         this.style.background = 'rgba(255,255,255,0.2)';
+       "
+       onmouseout="
+         this.style.borderColor = '#ccc';
+         this.style.background = 'rgba(255,255,255,0.1)';
+       "
+  >
+    <!-- L’image : pas de src au départ, et un style qui remplit le conteneur -->
+    <img id="photoPreviewNew"
+         onclick="document.getElementById('photoInputNew').click()"
+         style="
+           width: 100%;
+           height: 100%;
+           object-fit: cover;
+           border: none;
+           border-radius: 1rem;
+           cursor: pointer;
+           display: block;
+         "
+    />
+
+    <!-- Overlay (icône) -->
+    <div class="overlay"
+         style="
+           position: absolute; top:0; left:0; right:0; bottom:0;
+           display: none; align-items: center; justify-content: center;
+           background: rgba(0,0,0,0.5); color: #fff;
+           opacity: 0; transition: opacity 0.2s ease-in-out; border-radius:1rem; cursor: pointer;
+         "
+         onclick="document.getElementById('photoInputNew').click()">
+      <i data-lucide="pencil" style="width:24px; height:24px;"></i>
     </div>
+  </div>
+</div>
+
+<!-- Champ file caché -->
+<%= f.file_field :photo, id: "photoInputNew", style: "display: none;", onchange: "updatePhotoPreviewNew(this)" %>
+
 
     <!-- Input file caché pour uploader une nouvelle photo -->
     <%= f.file_field :photo, id: "photoInputNew", style: "display: none;", onchange: "updatePhotoPreviewNew(this)" %>
@@ -75,7 +113,7 @@
 
     <!-- Champ Price -->
     <div class="mb-3">
-      <%= f.label :price_per_day, "Price per day", class: "form-label" %>
+      <%= f.label :price_per_day, "Prix par jour", class: "form-label" %>
       <%= f.number_field :price_per_day, class: "form-control" %>
     </div>
   <% end %>
@@ -84,11 +122,13 @@
   <script>
     // Met à jour la preview de l'image dès qu'un fichier est sélectionné
     function updatePhotoPreviewNew(input) {
+      const container = document.getElementById("banner-container");
       const photoPreviewNew = document.getElementById("photoPreviewNew");
       if (input.files && input.files[0]) {
         const reader = new FileReader();
         reader.onload = function(e) {
           photoPreviewNew.src = e.target.result;
+          container.style.border = "none";
         };
         reader.readAsDataURL(input.files[0]);
       }
