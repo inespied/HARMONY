@@ -30,9 +30,10 @@
   <div style="margin-right: 1rem;"><%= index + 1 %></div>
 
   <div class="me-auto">
-  <strong>Réservé par : <%= booking.user.first_name %></strong><br>
+  <span class="rainbow-text" style="font-size: 1rem;"><strong><%= booking.portfolio.title %></strong><br></span>
+    <small class="<%= status_class %>">Statut : <%= booking.status.capitalize %></small><br>
+  <small>Réservé par : <%= booking.user.first_name %></small><br>
   <small class="text-white-50">Du <%= formatted_start_date %> au <%= formatted_end_date %></small><br>
-  <small class="<%= status_class %>">Statut : <%= booking.status.capitalize %></small><br>
   <small class="text-white-50">Créé par : <%= booking.portfolio.user.first_name %></small>
   </div>
 
@@ -84,7 +85,7 @@
   </div>
 
   <div class="me-auto">
-  <strong>
+  <strong class="rainbow-text" style="font-size: 1rem;">
   <%= link_to portfolio.title, portfolio_path(portfolio), class: "text-decoration-none text-white" %>
   </strong><br>
   <small class="text-white-50">
